@@ -19,7 +19,7 @@
 20329||-9223372036854775808|T|G
 20329||10|T|G
 20329||20330|T|G</Grants>
-      <IntrospectionStateNumber>2019</IntrospectionStateNumber>
+      <IntrospectionStateNumber>2039</IntrospectionStateNumber>
       <ServerVersion>16.9</ServerVersion>
       <StartupTime>1768456092</StartupTime>
       <TimeZones>true ACDT
@@ -726,13 +726,12 @@ false posixrules
       <Grants>11||10|C|G
 11||-9223372036854775808|U|G
 11||10|U|G
-2200||6171|C|G
-2200||-9223372036854775808|U|G
-2200||6171|U|G
 13266||10|C|G
 13266||-9223372036854775808|U|G
-13266||10|U|G</Grants>
-      <IntrospectionStateNumber>2019</IntrospectionStateNumber>
+13266||10|U|G
+20331||20330|C|G
+20331||20330|U|G</Grants>
+      <IntrospectionStateNumber>2049</IntrospectionStateNumber>
       <ObjectId>20329</ObjectId>
       <OwnerName>postgres</OwnerName>
     </database>
@@ -839,23 +838,169 @@ false posixrules
       <OwnerName>postgres</OwnerName>
     </schema>
     <schema id="32" parent="5" name="pg_catalog">
+      <AutoIntrospectionLevel>1</AutoIntrospectionLevel>
       <Comment>system catalog schema</Comment>
+      <LastIntrospectionLevel>1</LastIntrospectionLevel>
+      <LastIntrospectionLocalTimestamp>2026-01-15.20:33:21</LastIntrospectionLocalTimestamp>
       <ObjectId>11</ObjectId>
       <StateNumber>523</StateNumber>
       <OwnerName>postgres</OwnerName>
     </schema>
     <schema id="33" parent="5" name="public">
       <AutoIntrospectionLevel>3</AutoIntrospectionLevel>
-      <Comment>standard public schema</Comment>
       <Current>1</Current>
-      <LastIntrospectionL1Xid>2019</LastIntrospectionL1Xid>
-      <LastIntrospectionL2Xid>2019</LastIntrospectionL2Xid>
-      <LastIntrospectionL3Xid>2019</LastIntrospectionL3Xid>
+      <LastIntrospectionL1Xid>2039</LastIntrospectionL1Xid>
+      <LastIntrospectionL2Xid>2039</LastIntrospectionL2Xid>
+      <LastIntrospectionL3Xid>2039</LastIntrospectionL3Xid>
       <LastIntrospectionLevel>3</LastIntrospectionLevel>
-      <LastIntrospectionLocalTimestamp>2026-01-15.19:35:57</LastIntrospectionLocalTimestamp>
-      <ObjectId>2200</ObjectId>
-      <StateNumber>523</StateNumber>
-      <OwnerName>pg_database_owner</OwnerName>
+      <LastIntrospectionLocalTimestamp>2026-01-15.20:34:41</LastIntrospectionLocalTimestamp>
+      <ObjectId>20331</ObjectId>
+      <StateNumber>2037</StateNumber>
+      <OwnerName>mini_dish_db_manager</OwnerName>
     </schema>
+    <object-type id="34" parent="33" name="dish_type">
+      <DetailsLevel>2</DetailsLevel>
+      <Labels>STARTER
+MAIN
+DESSERT</Labels>
+      <ObjectId>20333</ObjectId>
+      <StateNumber>2038</StateNumber>
+      <SubCategory>enum</SubCategory>
+      <SubKind>enum</SubKind>
+      <OwnerName>mini_dish_db_manager</OwnerName>
+    </object-type>
+    <object-type id="35" parent="33" name="ingredient_category">
+      <DetailsLevel>2</DetailsLevel>
+      <Labels>VEGETABLE
+ANIMAL
+MARINE
+DAIRY
+OTHER</Labels>
+      <ObjectId>20347</ObjectId>
+      <StateNumber>2042</StateNumber>
+      <SubCategory>enum</SubCategory>
+      <SubKind>enum</SubKind>
+      <OwnerName>mini_dish_db_manager</OwnerName>
+    </object-type>
+    <table id="36" parent="33" name="dish">
+      <DetailsLevel>2</DetailsLevel>
+      <ObjectId>20340</ObjectId>
+      <StateNumber>2046</StateNumber>
+      <AccessMethodId>2</AccessMethodId>
+      <OwnerName>mini_dish_db_manager</OwnerName>
+    </table>
+    <table id="37" parent="33" name="ingredient">
+      <DetailsLevel>2</DetailsLevel>
+      <ObjectId>20358</ObjectId>
+      <StateNumber>2048</StateNumber>
+      <AccessMethodId>2</AccessMethodId>
+      <OwnerName>mini_dish_db_manager</OwnerName>
+    </table>
+    <column id="38" parent="36" name="id">
+      <DefaultExpression>nextval(&apos;dish_id_seq&apos;::regclass)</DefaultExpression>
+      <NotNull>1</NotNull>
+      <Position>1</Position>
+      <StateNumber>2040</StateNumber>
+      <StoredType>integer|0s</StoredType>
+      <SequenceId>20339</SequenceId>
+      <TypeId>23</TypeId>
+    </column>
+    <column id="39" parent="36" name="name">
+      <Position>2</Position>
+      <StateNumber>2040</StateNumber>
+      <StoredType>varchar(255)|0s</StoredType>
+      <TypeId>1043</TypeId>
+    </column>
+    <column id="40" parent="36" name="dish_type">
+      <Position>3</Position>
+      <StateNumber>2040</StateNumber>
+      <StoredType>dish_type|0s</StoredType>
+      <TypeId>20333</TypeId>
+    </column>
+    <column id="41" parent="36" name="price">
+      <Position>4</Position>
+      <StateNumber>2046</StateNumber>
+      <StoredType>numeric(10,2 digit)|0s</StoredType>
+      <TypeId>1700</TypeId>
+    </column>
+    <index id="42" parent="36" name="dish_pkey">
+      <ColNames>id</ColNames>
+      <NameSurrogate>1</NameSurrogate>
+      <ObjectId>20344</ObjectId>
+      <Primary>1</Primary>
+      <StateNumber>2040</StateNumber>
+      <Unique>1</Unique>
+      <AccessMethodId>403</AccessMethodId>
+    </index>
+    <key id="43" parent="36" name="dish_pkey">
+      <NameSurrogate>1</NameSurrogate>
+      <ObjectId>20345</ObjectId>
+      <Primary>1</Primary>
+      <StateNumber>2040</StateNumber>
+      <UnderlyingIndexId>20344</UnderlyingIndexId>
+    </key>
+    <column id="44" parent="37" name="id">
+      <DefaultExpression>nextval(&apos;ingredient_id_seq&apos;::regclass)</DefaultExpression>
+      <NotNull>1</NotNull>
+      <Position>1</Position>
+      <StateNumber>2044</StateNumber>
+      <StoredType>integer|0s</StoredType>
+      <SequenceId>20357</SequenceId>
+      <TypeId>23</TypeId>
+    </column>
+    <column id="45" parent="37" name="name">
+      <Position>2</Position>
+      <StateNumber>2044</StateNumber>
+      <StoredType>varchar(255)|0s</StoredType>
+      <TypeId>1043</TypeId>
+    </column>
+    <column id="46" parent="37" name="price">
+      <Position>3</Position>
+      <StateNumber>2044</StateNumber>
+      <StoredType>numeric(10,2 digit)|0s</StoredType>
+      <TypeId>1700</TypeId>
+    </column>
+    <column id="47" parent="37" name="category">
+      <Position>4</Position>
+      <StateNumber>2044</StateNumber>
+      <StoredType>ingredient_category|0s</StoredType>
+      <TypeId>20347</TypeId>
+    </column>
+    <column id="48" parent="37" name="id_dish">
+      <Position>5</Position>
+      <StateNumber>2044</StateNumber>
+      <StoredType>integer|0s</StoredType>
+      <TypeId>23</TypeId>
+    </column>
+    <column id="49" parent="37" name="required_quantity">
+      <Position>6</Position>
+      <StateNumber>2048</StateNumber>
+      <StoredType>numeric(10,2 digit)|0s</StoredType>
+      <TypeId>1700</TypeId>
+    </column>
+    <foreign-key id="50" parent="37" name="ingredient_id_dish_fkey">
+      <ColNames>id_dish</ColNames>
+      <NameSurrogate>1</NameSurrogate>
+      <ObjectId>20364</ObjectId>
+      <StateNumber>2044</StateNumber>
+      <RefKeyColPositions>1</RefKeyColPositions>
+      <RefTableId>20340</RefTableId>
+    </foreign-key>
+    <index id="51" parent="37" name="ingredient_pkey">
+      <ColNames>id</ColNames>
+      <NameSurrogate>1</NameSurrogate>
+      <ObjectId>20362</ObjectId>
+      <Primary>1</Primary>
+      <StateNumber>2044</StateNumber>
+      <Unique>1</Unique>
+      <AccessMethodId>403</AccessMethodId>
+    </index>
+    <key id="52" parent="37" name="ingredient_pkey">
+      <NameSurrogate>1</NameSurrogate>
+      <ObjectId>20363</ObjectId>
+      <Primary>1</Primary>
+      <StateNumber>2044</StateNumber>
+      <UnderlyingIndexId>20362</UnderlyingIndexId>
+    </key>
   </database-model>
 </dataSource>
