@@ -1,5 +1,15 @@
 create type dish_type as enum ('STARTER', 'MAIN', 'DESSERT');
 
+SELECT current_database(), current_user;
+CREATE TYPE dish_type AS ENUM ('STARTER', 'MAIN', 'DESSERT');
+
+
+CREATE SCHEMA public;
+GRANT ALL ON SCHEMA public TO mini_dish_db_manager;
+ALTER SCHEMA public OWNER TO mini_dish_db_manager;
+SELECT nspname, pg_catalog.pg_get_userbyid(nspowner)
+FROM pg_namespace
+WHERE nspname = 'public';
 
 create table dish
 (

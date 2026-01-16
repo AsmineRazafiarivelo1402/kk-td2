@@ -5,16 +5,10 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="f83a37f4-9389-439e-8268-980d466c8f95" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/../.idea/kk-td2.iml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/dataSources.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/data_source_mapping.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/sqldialects.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/dataSources/8aa812b9-e737-432a-bec5-9a2f358c8ed5.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources/8aa812b9-e737-432a-bec5-9a2f358c8ed5.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/dataSources/8aa812b9-e737-432a-bec5-9a2f358c8ed5/storage_v2/_src_/database/mini_dish_db.W8lBEA/schema/public.abK9xQ.meta" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources/8aa812b9-e737-432a-bec5-9a2f358c8ed5/storage_v2/_src_/database/mini_dish_db.W8lBEA/schema/public.abK9xQ.meta" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/dataSources.local.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources.local.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/data_source_mapping.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/data_source_mapping.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/.env" beforeDir="false" afterPath="$PROJECT_DIR$/.env" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/DBConnection.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/DBConnection.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/sql/schema.sql" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/sql/schema.sql" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../kk-td2/.gitignore" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/../kk-td2/.idea/.gitignore" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/../kk-td2/.idea/misc.xml" beforeDir="false" />
@@ -81,6 +75,13 @@
       <recent name="" />
     </key>
   </component>
+  <component name="RunManager">
+    <configuration name="schema.sql" type="DatabaseScript" editBeforeRun="true" nameIsGenerated="true">
+      <script-file value="$PROJECT_DIR$/src/main/resources/sql/schema.sql" />
+      <script-mode>FILE</script-mode>
+      <method v="2" />
+    </configuration>
+  </component>
   <component name="SharedIndexes">
     <attachedChunks>
       <set>
@@ -97,7 +98,7 @@
       <option name="presentableId" value="Default" />
       <updated>1768501535708</updated>
       <workItem from="1768501539951" duration="229000" />
-      <workItem from="1768501831764" duration="4257000" />
+      <workItem from="1768501831764" duration="6312000" />
     </task>
     <servers />
   </component>
