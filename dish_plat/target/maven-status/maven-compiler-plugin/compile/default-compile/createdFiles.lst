@@ -1,0 +1,7 @@
+Main.class
+Ingredient.class
+Dish.class
+CategoryEnum.class
+DishTypeEnum.class
+DataRetriever.class
+DBConnection.class

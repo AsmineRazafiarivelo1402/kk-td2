@@ -1,10 +1,9 @@
+
 public class Main {
     public static void main(String[] args) {
         // Log before changes
         DataRetriever dataRetriever = new DataRetriever();
-        Dish dish = dataRetriever.findDishById(4
-
-        );
+        Dish dish = dataRetriever.findDishById(4);
         System.out.println(dish);
 
         // Log after changes

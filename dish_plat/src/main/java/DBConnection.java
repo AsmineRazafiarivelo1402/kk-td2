@@ -1,5 +1,3 @@
-import io.github.cdimascio.dotenv.Dotenv;
-
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
@@ -8,13 +6,10 @@ public class DBConnection {
 
     public Connection getConnection() {
         try {
-            Dotenv dotenv = Dotenv.load();
-
-            String jdbcUrl = dotenv.get("JDBC_URL");
-            String user = dotenv.get("DB_USER");
-            String password = dotenv.get("DB_PASSWORD");
-
-            return DriverManager.getConnection(jdbcUrl,user,password);
+            String jdbcURl = "jdbc:postgresql://localhost:5432/mini_dish_db"; //
+            String user = "mini_dish_db_manager"; //mini_dish_db_manager
+            String password = "123456"; //123456
+            return DriverManager.getConnection(jdbcURl, user, password);
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }

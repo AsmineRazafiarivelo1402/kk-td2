@@ -35,3 +35,12 @@ alter table dish
 
 alter table ingredient
     add column if not exists required_quantity numeric(10, 2);
+
+-- -- //    List<Dish>
+-- //    permettant de récupérer la liste des plats qui possède un nom des ingrédients
+-- //    contenant la valeur du paramètre IngredientName fourni à travers la
+-- //    métho
+
+select dish.id, dish.name,dish.dish_type,dish.selling_price dish from dish;
+select ingredient.id, ingredient.name, ingredient.price , ingredient.category, ingredient.id_dish from ingredient where name ilike %?%;
+
