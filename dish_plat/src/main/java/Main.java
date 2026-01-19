@@ -1,10 +1,13 @@
+import java.util.List;
 
 public class Main {
     public static void main(String[] args) {
         // Log before changes
         DataRetriever dataRetriever = new DataRetriever();
-        Dish dish = dataRetriever.findDishById(4);
-        System.out.println(dish);
+//        Dish dish = dataRetriever.findDishById(4);
+//        System.out.println(dish);
+        List<Dish> dishes   = dataRetriever.findDishsByIngredientName("tomate");
+        System.out.println(dishes);
 
         // Log after changes
 //        dish.setIngredients(List.of(new Ingredient(1), new Ingredient(2)));
