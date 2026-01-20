@@ -3,17 +3,28 @@ import java.util.Objects;
 
 public class DishIngredient {
     private Integer id;
-    private Integer id_dish;
-    private Integer id_ingredient;
+    private Dish dish;
+    private Ingredient ingredient;
     private BigDecimal quantity_required;
     private Unit unit_tupe;
 
-    public DishIngredient(Integer id, Integer id_dish, Integer id_ingredient, BigDecimal quantity_required, Unit unit_tupe) {
+    public DishIngredient() {
+    }
+
+    public DishIngredient(Integer id, Dish dish, Ingredient ingredient, BigDecimal quantity_required, Unit unit_tupe) {
+        this.dish = dish;
         this.id = id;
-        this.id_dish = id_dish;
-        this.id_ingredient = id_ingredient;
+        this.ingredient = ingredient;
         this.quantity_required = quantity_required;
         this.unit_tupe = unit_tupe;
+    }
+
+    public Dish getDish() {
+        return dish;
+    }
+
+    public void setDish(Dish dish) {
+        this.dish = dish;
     }
 
     public Integer getId() {
@@ -24,20 +35,12 @@ public class DishIngredient {
         this.id = id;
     }
 
-    public Integer getId_dish() {
-        return id_dish;
+    public Ingredient getIngredient() {
+        return ingredient;
     }
 
-    public void setId_dish(Integer id_dish) {
-        this.id_dish = id_dish;
-    }
-
-    public Integer getId_ingredient() {
-        return id_ingredient;
-    }
-
-    public void setId_ingredient(Integer id_ingredient) {
-        this.id_ingredient = id_ingredient;
+    public void setIngredient(Ingredient ingredient) {
+        this.ingredient = ingredient;
     }
 
     public BigDecimal getQuantity_required() {
@@ -59,20 +62,20 @@ public class DishIngredient {
     @Override
     public boolean equals(Object o) {
         if (!(o instanceof DishIngredient that)) return false;
-        return Objects.equals(getId(), that.getId()) && Objects.equals(getId_dish(), that.getId_dish()) && Objects.equals(getId_ingredient(), that.getId_ingredient()) && Objects.equals(getQuantity_required(), that.getQuantity_required()) && getUnit_tupe() == that.getUnit_tupe();
+        return Objects.equals(getId(), that.getId()) && Objects.equals(getDish(), that.getDish()) && Objects.equals(getIngredient(), that.getIngredient()) && Objects.equals(getQuantity_required(), that.getQuantity_required()) && getUnit_tupe() == that.getUnit_tupe();
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getId(), getId_dish(), getId_ingredient(), getQuantity_required(), getUnit_tupe());
+        return Objects.hash(getId(), getDish(), getIngredient(), getQuantity_required(), getUnit_tupe());
     }
 
     @Override
     public String toString() {
         return "DishIngredient{" +
-                "id=" + id +
-                ", id_dish=" + id_dish +
-                ", id_ingredient=" + id_ingredient +
+
+                ", id=" + id +
+                ", ingredient=" + ingredient +
                 ", quantity_required=" + quantity_required +
                 ", unit_tupe=" + unit_tupe +
                 '}';

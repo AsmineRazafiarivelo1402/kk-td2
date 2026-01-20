@@ -64,5 +64,5 @@ create table ingredient
 select DishIngredient.id_ingredient from    DishIngredient where id_dish = ?;
 
 select id_dish from DishIngredient where id_ingredient = ?;
-select dish.id, dish.name, dish.dish_type, dish.selling_price , ingredient.id, ingredient.name, ingredient.price,ingredient.category from DishIngredient join dish on dish.id = id_dish join ingredient on ingredient.id= id_ingredient  where dish.id = ?;
+select dish.id, dish.name, dish.dish_type, dish.selling_price , ingredient.id, ingredient.name, ingredient.price,ingredient.category from DishIngredient join dish on dish.id = id_dish join ingredient on ingredient.id= id_ingredient  where dish.id = 1;
 

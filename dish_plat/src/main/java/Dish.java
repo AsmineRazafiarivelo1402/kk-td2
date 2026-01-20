@@ -3,27 +3,27 @@ import java.util.Objects;
 
 public class Dish {
     private Integer id;
-    private Double price;
+    private Double selling_price;
     private String name;
     private DishTypeEnum dishType;
-    private List<Ingredient> ingredients;
+    private List<DishIngredient> ingredients;
 
-    public Double getPrice() {
-        return price;
+    public Double getSelling_price() {
+        return selling_price;
     }
 
-    public void setPrice(Double price) {
-        this.price = price;
+    public void setPrice(Double selling_price) {
+        this.selling_price = selling_price;
     }
 
     public Double getDishCost() {
         double totalPrice = 0;
         for (int i = 0; i < ingredients.size(); i++) {
-            Double quantity = ingredients.get(i).getQuantity();
+            Double quantity = ingredients.get(i).getIngredient().getPrice();
             if(quantity == null) {
                 throw new RuntimeException("...");
             }
-            totalPrice = totalPrice + ingredients.get(i).getPrice() * quantity;
+            totalPrice = totalPrice + ingredients.get(i).getIngredient().getPrice() * quantity;
         }
         return totalPrice;
     }
@@ -31,7 +31,7 @@ public class Dish {
     public Dish() {
     }
 
-    public Dish(Integer id, String name, DishTypeEnum dishType, List<Ingredient> ingredients) {
+    public Dish(Integer id, String name, DishTypeEnum dishType, List<DishIngredient> ingredients) {
         this.id = id;
         this.name = name;
         this.dishType = dishType;
@@ -63,11 +63,11 @@ public class Dish {
         this.dishType = dishType;
     }
 
-    public List<Ingredient> getIngredients() {
+    public List<DishIngredient> getIngredients() {
         return ingredients;
     }
 
-    public void setIngredients(List<Ingredient> ingredients) {
+    public void setIngredients(List<DishIngredient> ingredients) {
         if (ingredients == null) {
             this.ingredients = null;
             return;
@@ -93,18 +93,18 @@ public class Dish {
     @Override
     public String toString() {
         return "Dish{" +
-                "id=" + id +
-                ", price=" + price +
+                "dishType=" + dishType +
+                ", id=" + id +
+                ", selling_price=" + selling_price +
                 ", name='" + name + '\'' +
-                ", dishType=" + dishType +
                 ", ingredients=" + ingredients +
                 '}';
     }
 
     public Double getGrossMargin() {
-        if (price == null) {
+        if (selling_price == null) {
             throw new RuntimeException("Price is null");
         }
-        return price - getDishCost();
+        return selling_price - getDishCost();
     }
 }

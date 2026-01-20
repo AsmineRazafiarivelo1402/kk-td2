@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/.idea/kk-td2.iml" filepath="$PROJECT_DIR$/.idea/kk-td2.iml" />
+      <module fileurl="file://$PROJECT_DIR$/dish_plat.iml" filepath="$PROJECT_DIR$/dish_plat.iml" />
     </modules>
   </component>
 </project>

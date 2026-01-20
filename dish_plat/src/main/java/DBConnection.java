@@ -11,7 +11,7 @@ public class DBConnection {
             String password = "123456"; //123456
             return DriverManager.getConnection(jdbcURl, user, password);
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            throw new RuntimeException("Teste " + e);
         }
     }
 
