@@ -1,3 +1,4 @@
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Objects;
 
@@ -12,14 +13,15 @@ public class Dish {
         return selling_price;
     }
 
-    public void setPrice(Double selling_price) {
+    public void setSelling_price(Double selling_price) {
         this.selling_price = selling_price;
     }
 
     public Double getDishCost() {
         double totalPrice = 0;
         for (int i = 0; i < ingredients.size(); i++) {
-            Double quantity = ingredients.get(i).getIngredient().getPrice();
+
+            Double quantity = ingredients.get(i).getQuantity_required().doubleValue();
             if(quantity == null) {
                 throw new RuntimeException("...");
             }
