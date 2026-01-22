@@ -138,14 +138,6 @@ public class DataRetriever {
             throw new RuntimeException(e);
         }
     }
-//    List<Ingredient>
-//    findIngredientsByCriteria(String
-//                                      ingredientName,
-//                              CategoryEnum category, String dishName, int page, int size) permettant
-//    de récupérer la liste des ingrédients suivant les critères : nom d' ingrédient, sa
-//    catégorie ET le nom du plat auquel il est associé, et tout cela de manière
-//    paginée. En particulier, si aucune valeur n’est fournie pour être filtrée, alors
-//    ignorez la condition.
         List<DishIngredient> findIngredientsByCriteria(String ingredientName, CategoryEnum category, String dishName, int page, int size) {
             if (ingredientName == null || category == null || dishName == null) {
                 return new ArrayList<>();
@@ -190,151 +182,152 @@ public class DataRetriever {
                 throw new RuntimeException(e);
             }
         }
-//    Dish saveDish(Dish toSave) {
-//        String upsertDishSql = """
-//                    INSERT INTO dish (id,  name, dish_type,selling_price)
-//                    VALUES (?,  ?, ?::dish_type,?)
-//                    ON CONFLICT (id) DO UPDATE
-//                    SET name = EXCLUDED.name,
-//                        dish_type = EXCLUDED.dish_type,
-//                            selling_price = EXCLUDED.selling_price
-//                    RETURNING id
-//                """;
-//
-//        try (Connection conn = new DBConnection().getConnection()) {
-//            conn.setAutoCommit(false);
-//            Integer dishId;
-//            try (PreparedStatement ps = conn.prepareStatement(upsertDishSql)) {
-//                if (toSave.getId() != null) {
-//                    ps.setInt(1, toSave.getId());
-//                } else {
-//                    ps.setInt(1, getNextSerialValue(conn, "dish", "id"));
-//                }
-//                if (toSave.getSelling_price()!= null) {
-//                    ps.setDouble(4, toSave.getSelling_price());
-//                } else {
-//                    ps.setNull(4, Types.DOUBLE);
-//                }
-//                ps.setString(2, toSave.getName());
-//                ps.setString(3, toSave.getDishType().name());
-//                try (ResultSet rs = ps.executeQuery()) {
-//                    rs.next();
-//                    dishId = rs.getInt(1);
-//                }
-//            }
-//
-//            List<Ingredient> newIngredients = toSave.getIngredients();
-//            detachIngredients(conn, dishId, newIngredients);
-//            attachIngredients(conn, dishId, newIngredients);
-//
-//            conn.commit();
-//            return findDishById(dishId);
-//        } catch (SQLException e) {
-//            throw new RuntimeException(e);
-//        }
-//    }
-//    private int getNextSerialValue(Connection conn, String tableName, String columnName)
-//            throws SQLException {
-//
-//        String sequenceName = getSerialSequenceName(conn, tableName, columnName);
-//        if (sequenceName == null) {
-//            throw new IllegalArgumentException(
-//                    "Any sequence found for " + tableName + "." + columnName
-//            );
-//        }
-//        updateSequenceNextValue(conn, tableName, columnName, sequenceName);
-//
-//        String nextValSql = "SELECT nextval(?)";
-//
-//        try (PreparedStatement ps = conn.prepareStatement(nextValSql)) {
-//            ps.setString(1, sequenceName);
-//            try (ResultSet rs = ps.executeQuery()) {
-//                rs.next();
-//                return rs.getInt(1);
-//            }
-//        }
-//    }
-//    private void detachIngredients(Connection conn, Integer dishId, List<DishIngredient> dishIngredients)
-//            throws SQLException {
-//        if (dishIngredients == null || dishIngredients.isEmpty()) {
-//            try (PreparedStatement ps = conn.prepareStatement(
-//                    "UPDATE DishIngredient SET id_dish = NULL WHERE id_dish = ?")) {
-//                ps.setInt(1, dishId);
-//                ps.executeUpdate();
-//            }
-//            return;
-//        }
-//
-//        String baseSql = """
-//                    UPDATE DishIngredient
-//                    SET id_dish = NULL
-//                    WHERE id_dish = ? AND id NOT IN (%s)
-//                """;
-//
-//        String inClause = dishIngredients.stream()
-//                .map(i -> "?")
-//                .collect(Collectors.joining(","));
-//
-//        String sql = String.format(baseSql, inClause);
-//
-//        try (PreparedStatement ps = conn.prepareStatement(sql)) {
-//            ps.setInt(1, dishId);
-//            int index = 2;
-//            for (DishIngredient dishIngredient : dishIngredients) {
-//                ps.setInt(index++, dishIngredient.getId());
-//            }
-//            ps.executeUpdate();
-//        }
-//    }
-//    private void attachIngredients(Connection conn, Integer dishId, List<DishIngredient> dishIngredients)
-//            throws SQLException {
-//
-//        if (dishIngredients == null || dishIngredients.isEmpty()) {
-//            return;
-//        }
-//
-//        String attachSql = """
-//                    UPDATE ingredient
-//                    SET id_dish = ?
-//                    WHERE id = ?
-//                """;
-//
-//        try (PreparedStatement ps = conn.prepareStatement(attachSql)) {
-//            for (DishIngredient ingredient : dishIngredients) {
-//                ps.setInt(1, dishId);
-//                ps.setInt(2, ingredient.getId());
-//                ps.addBatch(); // Can be substitute ps.executeUpdate() but bad performance
-//            }
-//            ps.executeBatch();
-//        }
-//    }
-//    private String getSerialSequenceName(Connection conn, String tableName, String columnName)
-//            throws SQLException {
-//
-//        String sql = "SELECT pg_get_serial_sequence(?, ?)";
-//
-//        try (PreparedStatement ps = conn.prepareStatement(sql)) {
-//            ps.setString(1, tableName);
-//            ps.setString(2, columnName);
-//
-//            try (ResultSet rs = ps.executeQuery()) {
-//                if (rs.next()) {
-//                    return rs.getString(1);
-//                }
-//            }
-//        }
-//        return null;
-//    }
-//    private void updateSequenceNextValue(Connection conn, String tableName, String columnName, String sequenceName) throws SQLException {
-//        String setValSql = String.format(
-//                "SELECT setval('%s', (SELECT COALESCE(MAX(%s), 0) FROM %s))",
-//                sequenceName, columnName, tableName
-//        );
-//
-//        try (PreparedStatement ps = conn.prepareStatement(setValSql)) {
-//            ps.executeQuery();
-//        }
-//    }
+
+    Dish saveDish(Dish toSave) {
+        String upsertDishSql = """
+                    INSERT INTO dish (id,  name, dish_type,selling_price)
+                    VALUES (?,  ?, ?::dish_type,?)
+                    ON CONFLICT (id) DO UPDATE
+                    SET name = EXCLUDED.name,
+                        dish_type = EXCLUDED.dish_type,
+                            selling_price = EXCLUDED.selling_price
+                    RETURNING id
+                """;
+
+        try (Connection conn = new DBConnection().getConnection()) {
+            conn.setAutoCommit(false);
+            Integer dishId;
+            try (PreparedStatement ps = conn.prepareStatement(upsertDishSql)) {
+                if (toSave.getId() != null) {
+                    ps.setInt(1, toSave.getId());
+                } else {
+                    ps.setInt(1, getNextSerialValue(conn, "dish", "id"));
+                }
+                if (toSave.getSelling_price()!= null) {
+                    ps.setDouble(4, toSave.getSelling_price());
+                } else {
+                    ps.setNull(4, Types.DOUBLE);
+                }
+                ps.setString(2, toSave.getName());
+                ps.setString(3, toSave.getDishType().name());
+                try (ResultSet rs = ps.executeQuery()) {
+                    rs.next();
+                    dishId = rs.getInt(1);
+                }
+            }
+
+            List<DishIngredient> newIngredients = toSave.getIngredients();
+            detachIngredients(conn, dishId, newIngredients);
+            attachIngredients(conn, dishId, newIngredients);
+
+            conn.commit();
+            return toSave;
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+    private int getNextSerialValue(Connection conn, String tableName, String columnName)
+            throws SQLException {
+
+        String sequenceName = getSerialSequenceName(conn, tableName, columnName);
+        if (sequenceName == null) {
+            throw new IllegalArgumentException(
+                    "Any sequence found for " + tableName + "." + columnName
+            );
+        }
+        updateSequenceNextValue(conn, tableName, columnName, sequenceName);
+
+        String nextValSql = "SELECT nextval(?)";
+
+        try (PreparedStatement ps = conn.prepareStatement(nextValSql)) {
+            ps.setString(1, sequenceName);
+            try (ResultSet rs = ps.executeQuery()) {
+                rs.next();
+                return rs.getInt(1);
+            }
+        }
+    }
+    private void detachIngredients(Connection conn, Integer dishId, List<DishIngredient> dishIngredients)
+            throws SQLException {
+        if (dishIngredients == null || dishIngredients.isEmpty()) {
+            try (PreparedStatement ps = conn.prepareStatement(
+                    "UPDATE DishIngredient SET id_dish = NULL WHERE id_dish = ?")) {
+                ps.setInt(1, dishId);
+                ps.executeUpdate();
+            }
+            return;
+        }
+
+        String baseSql = """
+                    UPDATE DishIngredient
+                    SET id_dish = NULL
+                    WHERE id_dish = ? AND id NOT IN (%s)
+                """;
+
+        String inClause = dishIngredients.stream()
+                .map(i -> "?")
+                .collect(Collectors.joining(","));
+
+        String sql = String.format(baseSql, inClause);
+
+        try (PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setInt(1, dishId);
+            int index = 2;
+            for (DishIngredient dishIngredient : dishIngredients) {
+                ps.setInt(index++, dishIngredient.getId());
+            }
+            ps.executeUpdate();
+        }
+    }
+    private void attachIngredients(Connection conn, Integer dishId, List<DishIngredient> dishIngredients)
+            throws SQLException {
+
+        if (dishIngredients == null || dishIngredients.isEmpty()) {
+            return;
+        }
+
+        String attachSql = """
+                    UPDATE dishIngredient
+                    SET id_dish = ?
+                    WHERE id_dish = ?
+                """;
+
+        try (PreparedStatement ps = conn.prepareStatement(attachSql)) {
+            for (DishIngredient ingredient : dishIngredients) {
+                ps.setInt(1, dishId);
+                ps.setInt(2, ingredient.getId());
+                ps.addBatch(); // Can be substitute ps.executeUpdate() but bad performance
+            }
+            ps.executeBatch();
+        }
+    }
+    private String getSerialSequenceName(Connection conn, String tableName, String columnName)
+            throws SQLException {
+
+        String sql = "SELECT pg_get_serial_sequence(?, ?)";
+
+        try (PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setString(1, tableName);
+            ps.setString(2, columnName);
+
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    return rs.getString(1);
+                }
+            }
+        }
+        return null;
+    }
+    private void updateSequenceNextValue(Connection conn, String tableName, String columnName, String sequenceName) throws SQLException {
+        String setValSql = String.format(
+                "SELECT setval('%s', (SELECT COALESCE(MAX(%s), 0) FROM %s))",
+                sequenceName, columnName, tableName
+        );
+
+        try (PreparedStatement ps = conn.prepareStatement(setValSql)) {
+            ps.executeQuery();
+        }
+    }
 //
 //    public List<Ingredient> createIngredients(List<Ingredient> newIngredients) {
 //        if (newIngredients == null || newIngredients.isEmpty()) {

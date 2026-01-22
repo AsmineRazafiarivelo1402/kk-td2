@@ -8,53 +8,15 @@ public class Dish {
     private String name;
     private DishTypeEnum dishType;
     private List<DishIngredient> ingredients;
-
-    public Double getSelling_price() {
-        return selling_price;
-    }
-
-    public void setSelling_price(Double selling_price) {
-        this.selling_price = selling_price;
-    }
-
-    public Double getDishCost() {
-        double totalPrice = 0;
-        for (int i = 0; i < ingredients.size(); i++) {
-
-            Double quantity = ingredients.get(i).getQuantity_required().doubleValue();
-            if(quantity == null) {
-                throw new RuntimeException("...");
-            }
-            totalPrice = totalPrice + ingredients.get(i).getIngredient().getPrice() * quantity;
-        }
-        return totalPrice;
-    }
-
     public Dish() {
     }
 
-    public Dish(Integer id, String name, DishTypeEnum dishType, List<DishIngredient> ingredients) {
-        this.id = id;
-        this.name = name;
+    public Dish( Integer id,String name, Double selling_price,DishTypeEnum dishType, List<DishIngredient> ingredients) {
         this.dishType = dishType;
-        this.ingredients = ingredients;
-    }
-
-
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
         this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
+        this.ingredients = ingredients;
         this.name = name;
+        this.selling_price = selling_price;
     }
 
     public DishTypeEnum getDishType() {
@@ -65,19 +27,36 @@ public class Dish {
         this.dishType = dishType;
     }
 
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
     public List<DishIngredient> getIngredients() {
         return ingredients;
     }
 
     public void setIngredients(List<DishIngredient> ingredients) {
-        if (ingredients == null) {
-            this.ingredients = null;
-            return;
-        }
-        for (int i = 0; i < ingredients.size(); i++) {
-            ingredients.get(i).setDish(this);
-        }
         this.ingredients = ingredients;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public Double getSelling_price() {
+        return selling_price;
+    }
+
+    public void setSelling_price(Double selling_price) {
+        this.selling_price = selling_price;
     }
 
     @Override
@@ -102,11 +81,24 @@ public class Dish {
                 ", ingredients=" + ingredients +
                 '}';
     }
+    public Double getDishCost() {
+        double totalPrice = 0;
+        for (int i = 0; i < ingredients.size(); i++) {
 
+            Double quantity = ingredients.get(i).getQuantity_required().doubleValue();
+            if(quantity == null) {
+                throw new RuntimeException("...");
+            }
+            totalPrice = totalPrice + ingredients.get(i).getIngredient().getPrice() * quantity;
+        }
+        return totalPrice;
+    }
     public Double getGrossMargin() {
         if (selling_price == null) {
             throw new RuntimeException("Price is null");
         }
         return selling_price - getDishCost();
     }
+
+
 }
