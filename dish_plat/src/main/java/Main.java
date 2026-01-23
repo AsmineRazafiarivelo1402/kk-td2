@@ -16,54 +16,75 @@ public class Main {
 //        CategoryEnum category = CategoryEnum.VEGETABLE;
 //List<DishIngredient> dishIngredientList = dataRetriever.findIngredientsByCriteria("tomate",category, "salade", 1, 1);
 //        System.out.println(dishIngredientList);
-        Ingredient ingredient = new Ingredient( 1 ," Laitue"  , CategoryEnum.VEGETABLE, 800.00);
+//        Ingredient ingredient = new Ingredient( 1 ," Laitue"  , CategoryEnum.VEGETABLE, 800.00);
+//
+//                Ingredient tomate = new Ingredient( 2 ," Tomate"  , CategoryEnum.VEGETABLE, 600.00);
+//        Dish dish1 = new Dish();
+//
+//
+//        BigDecimal bd = new BigDecimal("0.20");
+//        BigDecimal bd1 = new BigDecimal("0.15");
+//
+//
+//
+//
+//        DishIngredient dishIngredient = new DishIngredient(  1, dish1,ingredient,bd , Unit.KG );
+//        DishIngredient dishIngredient1 = new DishIngredient(  2, dish1,tomate,bd1 , Unit.KG );
+//        List<DishIngredient> dishIngredientList = List.of(dishIngredient1,dishIngredient);
+//        dish1.setId(1);
+//        dish1.setName("Salaide fraîche");
+//        dish1.setDishType(DishTypeEnum.STARTER );
+//        dish1.setDishIngredients(dishIngredientList);
+//        dish1.setSelling_price(3500.00);
+//        System.out.println(dish1.getDishCost());
+//        System.out.println(dish1.getGrossMargin());
+//
+//        System.out.println(dish1.getIngredients().get(0));
+//        System.out.println(dish1.getIngredients().get(1));
+//
+//        Ingredient i1 = new Ingredient(10, "Carotte", CategoryEnum.VEGETABLE, 0.40);
+//        Ingredient i2 = new Ingredient(6, "Poulet", CategoryEnum.ANIMAL, 2.50);
+//        Ingredient i3 = new Ingredient(7, "Lait", CategoryEnum.DAIRY, 0.60);
+//        Ingredient i4 = new Ingredient(8, "Fromage", CategoryEnum.DAIRY, 1.20);
+//        Ingredient i5 = new Ingredient(9, "Sel", CategoryEnum.OTHER, 0.10);
+//        Dish dish6 = new Dish();
+//        DishIngredient di1 = new DishIngredient( 6, dish6, i1,  new BigDecimal("100"),  Unit.KG);
+//        DishIngredient di2 = new DishIngredient(7,dish6, i2, new BigDecimal("200"),   Unit.KG);
+//        DishIngredient di3 = new DishIngredient(8,dish6, i3, new BigDecimal("1"), Unit.KG);
+//        DishIngredient di4 = new DishIngredient(9,dish6,i4, new BigDecimal("50"),Unit.KG);
+//        DishIngredient di5 = new DishIngredient( 10,  dish6,   i5, new BigDecimal("5"),Unit.KG);
+//        List<DishIngredient> listDishIngredient = List.of(di1,di2,di3,di4,di5);
+//        dish6.setId(5);
+//        dish6.setName("Pizza");
+//        dish6.setDishType(DishTypeEnum.MAIN);
+//        dish6.setDishIngredients(listDishIngredient);
+//        dish6.setSelling_price(3500.00);
+//        Dish dishTosave = dataRetriever.saveDish(dish6);
+//        System.out.println(dishTosave );
 
-                Ingredient tomate = new Ingredient( 2 ," Tomate"  , CategoryEnum.VEGETABLE, 600.00);
-        Dish dish1 = new Dish();
+        Ingredient ingredient20 = new Ingredient(); ingredient20.setId(20); ingredient20.setName("Riz"); ingredient20.setCategory(CategoryEnum.OTHER); ingredient20.setPrice(1200.0);
 
+        DishIngredient di20 = new DishIngredient(); di20.setId(20); di20.setIngredient(ingredient20); di20.setQuantity_required(new BigDecimal("0.5")); di20.setUnit_tupe(Unit.KG);
 
-        BigDecimal bd = new BigDecimal("0.20");
-        BigDecimal bd1 = new BigDecimal("0.15");
+        Ingredient ingredient21 = new Ingredient(); ingredient21.setId(21); ingredient21.setName("Huile"); ingredient21.setCategory(CategoryEnum.VEGETABLE); ingredient21.setPrice(3000.0);
 
+        DishIngredient di21 = new DishIngredient(); di21.setId(21); di21.setIngredient(ingredient21); di21.setQuantity_required(new BigDecimal("0.05")); di21.setUnit_tupe(Unit.KG);
 
+        Dish dish = new Dish(); dish.setId(50); dish.setName("Riz sauté"); dish.setDishType(DishTypeEnum.MAIN); dish.setSelling_price(8000.0); dish.setDishIngredients(List.of(di20, di21));
 
+        di20.setDish(dish); di21.setDish(dish);
 
-        DishIngredient dishIngredient = new DishIngredient(  1, dish1,ingredient,bd , Unit.KG );
-        DishIngredient dishIngredient1 = new DishIngredient(  2, dish1,tomate,bd1 , Unit.KG );
-        List<DishIngredient> dishIngredientList = List.of(dishIngredient1,dishIngredient);
-        dish1.setId(1);
-        dish1.setName("Salaide fraîche");
-        dish1.setDishType(DishTypeEnum.STARTER );
-        dish1.setIngredients(dishIngredientList);
-        dish1.setSelling_price(3500.00);
-        System.out.println(dish1.getDishCost());
-        System.out.println(dish1.getGrossMargin());
+        System.out.println(dataRetriever.saveDish(dish));
 
-        System.out.println(dish1.getIngredients().get(0));
-        System.out.println(dish1.getIngredients().get(1));
+        Ingredient ingredient22 = new Ingredient(); ingredient22.setId(22); ingredient22.setName("Viande"); ingredient22.setCategory(CategoryEnum.ANIMAL); ingredient22.setPrice(6000.0);
 
-        Ingredient i1 = new Ingredient(10, "Carotte", CategoryEnum.VEGETABLE, 0.40);
-        Ingredient i2 = new Ingredient(6, "Poulet", CategoryEnum.ANIMAL, 2.50);
-        Ingredient i3 = new Ingredient(7, "Lait", CategoryEnum.DAIRY, 0.60);
-        Ingredient i4 = new Ingredient(8, "Fromage", CategoryEnum.DAIRY, 1.20);
-        Ingredient i5 = new Ingredient(9, "Sel", CategoryEnum.OTHER, 0.10);
-        Dish dish6 = new Dish();
-        DishIngredient di1 = new DishIngredient( 6, dish6, i1,  new BigDecimal("100"),  Unit.KG);
-        DishIngredient di2 = new DishIngredient(7,dish6, i2, new BigDecimal("200"),   Unit.KG);
-        DishIngredient di3 = new DishIngredient(8,dish6, i3, new BigDecimal("1"), Unit.KG);
-        DishIngredient di4 = new DishIngredient(9,dish6,i4, new BigDecimal("50"),Unit.KG);
-        DishIngredient di5 = new DishIngredient( 10,  dish6,   i5, new BigDecimal("5"),Unit.KG);
-        List<DishIngredient> listDishIngredient = List.of(di1,di2,di3,di4,di5);
-        dish6.setId(5);
-        dish6.setName("Pizza");
-        dish6.setDishType(DishTypeEnum.MAIN);
-        dish6.setIngredients(listDishIngredient);
-        dish6.setSelling_price(3500.00);
-        Dish dishTosave = dataRetriever.saveDish(dish6);
-        System.out.println(dishTosave );
+        DishIngredient di22 = new DishIngredient(); di22.setId(22); di22.setIngredient(ingredient22); di22.setQuantity_required(new BigDecimal("0.3")); di22.setUnit_tupe(Unit.KG);
 
+        Dish dishtosave2 = new Dish(); dishtosave2.setId(50); dishtosave2.setName("Riz sauté spécial"); dishtosave2.setDishType(DishTypeEnum.MAIN); dishtosave2.setSelling_price(9000.0); dishtosave2.setDishIngredients(List.of(di22));
 
+        di22.setDish(dishtosave2);
 
+        System.out.println(dataRetriever.saveDish(dishtosave2));
 
 
     }

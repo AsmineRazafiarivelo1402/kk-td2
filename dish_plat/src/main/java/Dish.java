@@ -7,14 +7,14 @@ public class Dish {
     private Double selling_price;
     private String name;
     private DishTypeEnum dishType;
-    private List<DishIngredient> ingredients;
+    private List<DishIngredient> dishIngredients;
     public Dish() {
     }
 
-    public Dish( Integer id,String name, Double selling_price,DishTypeEnum dishType, List<DishIngredient> ingredients) {
+    public Dish( Integer id,String name, Double selling_price,DishTypeEnum dishType, List<DishIngredient> dishIngredients) {
         this.dishType = dishType;
         this.id = id;
-        this.ingredients = ingredients;
+        this.dishIngredients = dishIngredients;
         this.name = name;
         this.selling_price = selling_price;
     }
@@ -36,11 +36,11 @@ public class Dish {
     }
 
     public List<DishIngredient> getIngredients() {
-        return ingredients;
+        return dishIngredients;
     }
 
-    public void setIngredients(List<DishIngredient> ingredients) {
-        this.ingredients = ingredients;
+    public void setDishIngredients(List<DishIngredient> ingredients) {
+        this.dishIngredients = ingredients;
     }
 
     public String getName() {
@@ -63,12 +63,12 @@ public class Dish {
     public boolean equals(Object o) {
         if (o == null || getClass() != o.getClass()) return false;
         Dish dish = (Dish) o;
-        return Objects.equals(id, dish.id) && Objects.equals(name, dish.name) && dishType == dish.dishType && Objects.equals(ingredients, dish.ingredients);
+        return Objects.equals(id, dish.id) && Objects.equals(name, dish.name) && dishType == dish.dishType && Objects.equals(dishIngredients, dish.dishIngredients);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, name, dishType, ingredients);
+        return Objects.hash(id, name, dishType, dishIngredients);
     }
 
     @Override
@@ -78,18 +78,18 @@ public class Dish {
                 ", id=" + id +
                 ", selling_price=" + selling_price +
                 ", name='" + name + '\'' +
-                ", ingredients=" + ingredients +
+                ", dishingredients=" + dishIngredients+
                 '}';
     }
     public Double getDishCost() {
         double totalPrice = 0;
-        for (int i = 0; i < ingredients.size(); i++) {
+        for (int i = 0; i < dishIngredients.size(); i++) {
 
-            Double quantity = ingredients.get(i).getQuantity_required().doubleValue();
+            Double quantity = dishIngredients.get(i).getQuantity_required().doubleValue();
             if(quantity == null) {
                 throw new RuntimeException("...");
             }
-            totalPrice = totalPrice + ingredients.get(i).getIngredient().getPrice() * quantity;
+            totalPrice = totalPrice + dishIngredients.get(i).getIngredient().getPrice() * quantity;
         }
         return totalPrice;
     }
@@ -99,6 +99,7 @@ public class Dish {
         }
         return selling_price - getDishCost();
     }
+
 
 
 }

@@ -5,6 +5,8 @@ public class DishIngredient {
     private Integer id;
     private Dish dish;
     private Ingredient ingredient;
+
+
     private BigDecimal quantity_required;
     private Unit unit_tupe;
 
@@ -19,6 +21,9 @@ public class DishIngredient {
         this.unit_tupe = unit_tupe;
     }
 
+    public void setQuantity_required(BigDecimal quantity_required) {
+        this.quantity_required = quantity_required;
+    }
     public Dish getDish() {
         return dish;
     }
@@ -47,9 +52,9 @@ public class DishIngredient {
         return quantity_required;
     }
 
-    public void setQuantity_required(BigDecimal quantity_required) {
-        this.quantity_required = quantity_required;
-    }
+//    public void setQuantity_required(BigDecimal quantity_required) {
+//        this.quantity_required = quantity_required;
+//    }
 
     public Unit getUnit_tupe() {
         return unit_tupe;
@@ -73,7 +78,6 @@ public class DishIngredient {
     @Override
     public String toString() {
         return "DishIngredient{" +
-
                 ", id=" + id +
                 ", ingredient=" + ingredient +
                 ", quantity_required=" + quantity_required +
