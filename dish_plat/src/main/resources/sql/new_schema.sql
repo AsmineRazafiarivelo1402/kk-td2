@@ -58,7 +58,7 @@ create table ingredient
     id       serial primary key,
     name     varchar(255),
     price    numeric(10, 2),
-    category ingredient_category,
+    category ingredient_category
 
 );
 select DishIngredient.id_ingredient from    DishIngredient where id_dish = ?;
@@ -73,4 +73,14 @@ from DishIngredient
          join ingredient on ingredient.id= id_ingredient
 where ingredient.name ilike '%laitue%' or ingredient.category ='VEGETABLE' or dish.name ilike '%salade%' LIMIT 2 OFFSET 1
 
+
+create type mouvement_type as enum('IN','OUT');
+Create table StockMovement (
+    id serial primary key,
+    id_ingredient int,
+    quantity numeric,
+    type mouvement_type,
+    unit unit_type,
+    creation_datetime timestamp
+);
     ;
