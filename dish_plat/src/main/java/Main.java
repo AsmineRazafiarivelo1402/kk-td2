@@ -85,6 +85,9 @@ public class Main {
         di22.setDish(dishtosave2);
 
         System.out.println(dataRetriever.saveDish(dishtosave2));
+        List<StockMovement> stockMovementList = new ArrayList<>();
+        Ingredient ail = new Ingredient(45, "Ail", 0.10, CategoryEnum.OTHER,stockMovementList);
+        Ingredient toSave = dataRetriever.saveIngredient(ail);
 
 
     }

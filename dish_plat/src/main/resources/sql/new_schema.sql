@@ -96,3 +96,6 @@ values
 (9,5,2.5,'IN','KG','2024-01-05 08:00'),
 (10,5,0.2,'OUT','KG','2024-01-06 14:00');
  select  * from stockmovement;
+select * from  ingredient;
+
+select StockMovement.quantity, StockMovement.type from StockMovement where creation_datetime = '2024-01-06 12:00';

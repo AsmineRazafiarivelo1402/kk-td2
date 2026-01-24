@@ -7,6 +7,9 @@ public class StockMovement {
     Movementtype movementtype;
     Instant creationDateTime;
 
+    public StockMovement() {
+    }
+
     public StockMovement(Instant creationDateTime, int id, Movementtype movementtype, StockValue value) {
         this.creationDateTime = creationDateTime;
         this.id = id;

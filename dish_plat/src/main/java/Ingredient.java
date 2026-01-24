@@ -1,3 +1,8 @@
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.time.Instant;
 import java.util.List;
 import java.util.Objects;
 
@@ -18,7 +23,7 @@ public class Ingredient {
         this.id = id;
     }
 
-    public Ingredient(CategoryEnum category, Integer id, String name, Double price, List<StockMovement> stockMovementList) {
+    public Ingredient( Integer id, String name, Double price,CategoryEnum category, List<StockMovement> stockMovementList) {
         this.category = category;
         this.id = id;
         this.name = name;
@@ -86,5 +91,27 @@ public class Ingredient {
                 ", price=" + price +
                 ", stockMovementList=" + stockMovementList +
                 '}';
+    }
+
+    public StockValue getStockValueAt(Instant instant){
+        String findStock ="select StockMovement.quantity, StockMovement.type from StockMovement where creation_datetime = ?";
+        DBConnection dbConnection = new DBConnection();
+        Connection connection = dbConnection.getConnection();
+    try{
+        PreparedStatement ps = connection.prepareStatement(findStock);
+        ps.setString(1, String.valueOf(instant));
+        ResultSet rs = ps.executeQuery();
+        StockValue value = new StockValue();
+        while(rs.next()){
+
+           value.setQuantity(rs.getDouble("quantity"));
+           value.setUnit(Unit.valueOf(rs.getString("type")));
+
+        }
+        return value;
+    } catch (SQLException e) {
+        throw new RuntimeException(e);
+    }
+
     }
 }
