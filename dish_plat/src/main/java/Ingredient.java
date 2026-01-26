@@ -1,7 +1,4 @@
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.time.Instant;
 import java.util.List;
 import java.util.Objects;
@@ -92,26 +89,46 @@ public class Ingredient {
                 ", stockMovementList=" + stockMovementList +
                 '}';
     }
+    public StockValue getStockValueAt(Instant instant) {
 
-    public StockValue getStockValueAt(Instant instant){
-        String findStock ="select StockMovement.quantity, StockMovement.type from StockMovement where creation_datetime = ?";
+        String findStock = """
+        SELECT 
+            COALESCE(SUM(
+                CASE 
+                    WHEN type = 'IN'  THEN quantity
+                    WHEN type = 'OUT' THEN -quantity
+                END
+            ), 0) AS stock,
+            unit
+        FROM StockMovement
+        WHERE id_ingredient = ?
+          AND creation_datetime <= ?
+        GROUP BY unit
+    """;
+
         DBConnection dbConnection = new DBConnection();
         Connection connection = dbConnection.getConnection();
-    try{
-        PreparedStatement ps = connection.prepareStatement(findStock);
-        ps.setString(1, String.valueOf(instant));
-        ResultSet rs = ps.executeQuery();
-        StockValue value = new StockValue();
-        while(rs.next()){
 
-           value.setQuantity(rs.getDouble("quantity"));
-           value.setUnit(Unit.valueOf(rs.getString("type")));
+        try {
+            PreparedStatement ps = connection.prepareStatement(findStock);
+            ps.setInt(1, this.getId()); // 👈 ingrédient courant
+            ps.setTimestamp(2, Timestamp.from(instant));
 
+            ResultSet rs = ps.executeQuery();
+
+            StockValue value = new StockValue();
+
+            if (rs.next()) {
+                value.setQuantity(rs.getDouble("stock"));
+                value.setUnit(Unit.valueOf(rs.getString("unit")));
+            }
+
+            return value;
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
         }
-        return value;
-    } catch (SQLException e) {
-        throw new RuntimeException(e);
     }
 
-    }
+
 }

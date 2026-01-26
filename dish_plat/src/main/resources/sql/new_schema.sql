@@ -97,5 +97,16 @@ values
 (10,5,0.2,'OUT','KG','2024-01-06 14:00');
  select  * from stockmovement;
 select * from  ingredient;
+SELECT
+    COALESCE(SUM(
+                     CASE
+                         WHEN type = 'IN'  THEN quantity
+                         WHEN type = 'OUT' THEN -quantity
+                         END
+             ), 0) AS stock,
+    unit
+FROM StockMovement
+WHERE creation_datetime <= '2024-01-06 12:00'
+GROUP BY unit;
 
 select StockMovement.quantity, StockMovement.type from StockMovement where creation_datetime = '2024-01-06 12:00';

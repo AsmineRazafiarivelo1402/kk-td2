@@ -420,19 +420,22 @@ public class DataRetriever {
 
     private void saveStockMovementList(Ingredient toSave) {
         String insertStockMovement = """
-                     INSERT INTO ingredient (id,  name, price,category)
+                     INSERT INTO StockMovement (id,id_ingredient ,quantity,type, unit, creation_datetime)
                                     VALUES (?,  ?, ?,?::mouvement_type,?::unit_type,?)
                                     ON CONFLICT (id) DO NOTHING
                                  """;
         DBConnection dbConnection = new DBConnection();
         Connection conn = dbConnection.getConnection();
         try (PreparedStatement ps = conn.prepareStatement(insertStockMovement)) {
-//            for (StockMovement stock : toSave.getStockMovementList()) {
-//                ps.setInt(1,stock.getId());
-//                ps.setInt(2,toSave.getId());
-//                ps.setString(3,stock.get);
-//                ps.executeUpdate(); // ✅ EXECUTE DANS LA BOUCLE
-//            }
+            for (StockMovement stock : toSave.getStockMovementList()) {
+                ps.setInt(1,stock.getId());
+                ps.setInt(2,toSave.getId());
+                ps.setDouble(3,stock.getValue().getQuantity());
+                ps.setString(4,stock.getMovementtype().name());
+                ps.setString(5,stock.getValue().getUnit().name());
+                ps.setString(6,stock.getCreationDateTime().toString());
+                ps.executeUpdate(); // ✅ EXECUTE DANS LA BOUCLE
+            }
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }

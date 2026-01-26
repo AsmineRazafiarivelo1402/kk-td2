@@ -1,7 +1,10 @@
 import java.math.BigDecimal;
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+
+
 
 public class Main {
     public static void main(String[] args) {
@@ -61,34 +64,40 @@ public class Main {
 //        dish6.setSelling_price(3500.00);
 //        Dish dishTosave = dataRetriever.saveDish(dish6);
 //        System.out.println(dishTosave );
-
-        Ingredient ingredient20 = new Ingredient(); ingredient20.setId(20); ingredient20.setName("Riz"); ingredient20.setCategory(CategoryEnum.OTHER); ingredient20.setPrice(1200.0);
-
-        DishIngredient di20 = new DishIngredient(); di20.setId(20); di20.setIngredient(ingredient20); di20.setQuantity_required(new BigDecimal("0.5")); di20.setUnit_tupe(Unit.KG);
-
-        Ingredient ingredient21 = new Ingredient(); ingredient21.setId(21); ingredient21.setName("Huile"); ingredient21.setCategory(CategoryEnum.VEGETABLE); ingredient21.setPrice(3000.0);
-
-        DishIngredient di21 = new DishIngredient(); di21.setId(21); di21.setIngredient(ingredient21); di21.setQuantity_required(new BigDecimal("0.05")); di21.setUnit_tupe(Unit.KG);
-
-        Dish dish = new Dish(); dish.setId(50); dish.setName("Riz sauté"); dish.setDishType(DishTypeEnum.MAIN); dish.setSelling_price(8000.0); dish.setDishIngredients(List.of(di20, di21));
-
-        di20.setDish(dish); di21.setDish(dish);
-
-        System.out.println(dataRetriever.saveDish(dish));
-
-        Ingredient ingredient22 = new Ingredient(); ingredient22.setId(22); ingredient22.setName("Viande"); ingredient22.setCategory(CategoryEnum.ANIMAL); ingredient22.setPrice(6000.0);
-
-        DishIngredient di22 = new DishIngredient(); di22.setId(22); di22.setIngredient(ingredient22); di22.setQuantity_required(new BigDecimal("0.3")); di22.setUnit_tupe(Unit.KG);
-
-        Dish dishtosave2 = new Dish(); dishtosave2.setId(50); dishtosave2.setName("Riz sauté spécial"); dishtosave2.setDishType(DishTypeEnum.MAIN); dishtosave2.setSelling_price(9000.0); dishtosave2.setDishIngredients(List.of(di22));
-
-        di22.setDish(dishtosave2);
-
-        System.out.println(dataRetriever.saveDish(dishtosave2));
+//
+//        Ingredient ingredient20 = new Ingredient(); ingredient20.setId(20); ingredient20.setName("Riz"); ingredient20.setCategory(CategoryEnum.OTHER); ingredient20.setPrice(1200.0);
+//
+//        DishIngredient di20 = new DishIngredient(); di20.setId(20); di20.setIngredient(ingredient20); di20.setQuantity_required(new BigDecimal("0.5")); di20.setUnit_tupe(Unit.KG);
+//
+//        Ingredient ingredient21 = new Ingredient(); ingredient21.setId(21); ingredient21.setName("Huile"); ingredient21.setCategory(CategoryEnum.VEGETABLE); ingredient21.setPrice(3000.0);
+//
+//        DishIngredient di21 = new DishIngredient(); di21.setId(21); di21.setIngredient(ingredient21); di21.setQuantity_required(new BigDecimal("0.05")); di21.setUnit_tupe(Unit.KG);
+//
+//        Dish dish = new Dish(); dish.setId(50); dish.setName("Riz sauté"); dish.setDishType(DishTypeEnum.MAIN); dish.setSelling_price(8000.0); dish.setDishIngredients(List.of(di20, di21));
+//
+//        di20.setDish(dish); di21.setDish(dish);
+//
+//        System.out.println(dataRetriever.saveDish(dish));
+//
+//        Ingredient ingredient22 = new Ingredient(); ingredient22.setId(22); ingredient22.setName("Viande"); ingredient22.setCategory(CategoryEnum.ANIMAL); ingredient22.setPrice(6000.0);
+//
+//        DishIngredient di22 = new DishIngredient(); di22.setId(22); di22.setIngredient(ingredient22); di22.setQuantity_required(new BigDecimal("0.3")); di22.setUnit_tupe(Unit.KG);
+//
+//        Dish dishtosave2 = new Dish(); dishtosave2.setId(50); dishtosave2.setName("Riz sauté spécial"); dishtosave2.setDishType(DishTypeEnum.MAIN); dishtosave2.setSelling_price(9000.0); dishtosave2.setDishIngredients(List.of(di22));
+//
+//        di22.setDish(dishtosave2);
+//
+//        System.out.println(dataRetriever.saveDish(dishtosave2));
         List<StockMovement> stockMovementList = new ArrayList<>();
         Ingredient ail = new Ingredient(45, "Ail", 0.10, CategoryEnum.OTHER,stockMovementList);
         Ingredient toSave = dataRetriever.saveIngredient(ail);
-
+        StockValue value = new StockValue(5.0, Unit.KG);
+        StockMovement stock1 = new StockMovement(1,Movementtype.IN, Instant.parse("2024-01-05T08:00:00Z"),value);
+        StockValue value1 = new StockValue(0.2,Unit.KG);
+        StockMovement stock2 = new StockMovement(2,Movementtype.OUT ,Instant.parse("2024-01-06T12:00:00Z"),value1);
+        List<StockMovement> stockMovements = List.of(stock1,stock2);
+        Ingredient laitue = new Ingredient(1,"Laitue",800.00, CategoryEnum.VEGETABLE,stockMovements);
+        System.out.println(laitue.getStockValueAt(Instant.parse("2024-01-06T12:00:00Z")));
 
     }
 }

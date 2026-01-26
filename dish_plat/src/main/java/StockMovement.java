@@ -10,7 +10,7 @@ public class StockMovement {
     public StockMovement() {
     }
 
-    public StockMovement(Instant creationDateTime, int id, Movementtype movementtype, StockValue value) {
+    public StockMovement(int id, Movementtype movementtype,Instant creationDateTime, StockValue value) {
         this.creationDateTime = creationDateTime;
         this.id = id;
         this.movementtype = movementtype;
