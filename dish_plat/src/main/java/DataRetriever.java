@@ -213,7 +213,7 @@ public class DataRetriever {
                 }
             }
 
-            List<DishIngredient> newIngredients = toSave.getIngredients();
+            List<DishIngredient> newIngredients = toSave.getDishIngredients();
             detachDishIngredient(conn, dishId, newIngredients);
             saveIngredientByDishIngredient(conn,dishId, newIngredients);
             attachDishIngredient(conn, dishId, newIngredients);

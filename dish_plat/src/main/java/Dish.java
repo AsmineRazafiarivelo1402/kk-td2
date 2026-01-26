@@ -35,7 +35,7 @@ public class Dish {
         this.id = id;
     }
 
-    public List<DishIngredient> getIngredients() {
+    public List<DishIngredient> getDishIngredients() {
         return dishIngredients;
     }
 

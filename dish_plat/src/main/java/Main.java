@@ -88,16 +88,16 @@ public class Main {
 //        di22.setDish(dishtosave2);
 //
 //        System.out.println(dataRetriever.saveDish(dishtosave2));
-        List<StockMovement> stockMovementList = new ArrayList<>();
-        Ingredient ail = new Ingredient(45, "Ail", 0.10, CategoryEnum.OTHER,stockMovementList);
-        Ingredient toSave = dataRetriever.saveIngredient(ail);
-        StockValue value = new StockValue(5.0, Unit.KG);
-        StockMovement stock1 = new StockMovement(1,Movementtype.IN, Instant.parse("2024-01-05T08:00:00Z"),value);
-        StockValue value1 = new StockValue(0.2,Unit.KG);
-        StockMovement stock2 = new StockMovement(2,Movementtype.OUT ,Instant.parse("2024-01-06T12:00:00Z"),value1);
-        List<StockMovement> stockMovements = List.of(stock1,stock2);
-        Ingredient laitue = new Ingredient(1,"Laitue",800.00, CategoryEnum.VEGETABLE,stockMovements);
-        System.out.println(laitue.getStockValueAt(Instant.parse("2024-01-06T12:00:00Z")));
+//        List<StockMovement> stockMovementList = new ArrayList<>();
+//        Ingredient ail = new Ingredient(45, "Ail", 0.10, CategoryEnum.OTHER,stockMovementList);
+//        Ingredient toSave = dataRetriever.saveIngredient(ail);
+//        StockValue value = new StockValue(5.0, Unit.KG);
+//        StockMovement stock1 = new StockMovement(1,Movementtype.IN, Instant.parse("2024-01-05T08:00:00Z"),value);
+//        StockValue value1 = new StockValue(0.2,Unit.KG);
+//        StockMovement stock2 = new StockMovement(2,Movementtype.OUT ,Instant.parse("2024-01-06T12:00:00Z"),value1);
+//        List<StockMovement> stockMovements = List.of(stock1,stock2);
+//        Ingredient laitue = new Ingredient(1,"Laitue",800.00, CategoryEnum.VEGETABLE,stockMovements);
+//        System.out.println(laitue.getStockValueAt(Instant.parse("2024-01-06T12:00:00Z")));
 
     }
 }
