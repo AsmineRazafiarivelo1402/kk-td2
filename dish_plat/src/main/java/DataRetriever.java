@@ -381,28 +381,37 @@ public class DataRetriever {
             ps.executeQuery();
         }
     }
-    Ingredient saveIngredient(Ingredient toSave){
-        DBConnection dbconnection =  new DBConnection();
-        Connection  conn = dbconnection.getConnection();
-        if(toSave == null){
-            throw new RuntimeException();
+
+    public Ingredient saveIngredient(Ingredient toSave) {
+
+        if (toSave == null) {
+            throw new IllegalArgumentException("Ingredient cannot be null");
         }
+
         String insertSql = """
-                  INSERT INTO ingredient (id,  name, price,category)
-                    VALUES (?,  ?, ?,?::ingredient_category)
-                    ON CONFLICT (id) DO UPDATE
-                    SET name = EXCLUDED.name,
-                        category = EXCLUDED.category,
-                            price = EXCLUDED.price
-                 
-                """;
-        try (PreparedStatement ps = conn.prepareStatement(insertSql)) {
+        INSERT INTO ingredient (id, name, price, category)
+        VALUES (?, ?, ?, ?::ingredient_category)
+        ON CONFLICT (id) DO UPDATE
+        SET name = EXCLUDED.name,
+            category = EXCLUDED.category,
+            price = EXCLUDED.price
+    """;
+
+        try (Connection conn = new DBConnection().getConnection();
+             PreparedStatement ps = conn.prepareStatement(insertSql)) {
+
+            conn.setAutoCommit(false);
+
             if (toSave.getId() != null) {
                 ps.setInt(1, toSave.getId());
             } else {
-                ps.setInt(1, getNextSerialValue(conn, "ingredient", "id"));
+                int generatedId = getNextSerialValue(conn, "ingredient", "id");
+                ps.setInt(1, generatedId);
+                toSave.setId(generatedId);
             }
+
             ps.setString(2, toSave.getName());
+
             if (toSave.getPrice() != null) {
                 ps.setDouble(3, toSave.getPrice());
             } else {
@@ -410,38 +419,52 @@ public class DataRetriever {
             }
 
             ps.setString(4, toSave.getCategory().name());
-            ps.execute();
-            saveStockMovementList(toSave);
+
+            ps.executeUpdate(); // ✅ pas de RETURNING → executeUpdate
+
+            saveStockMovementList(conn, toSave); // ✅ même connexion
+
+            conn.commit();
+            return toSave;
+
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
-        return toSave;
     }
 
-    private void saveStockMovementList(Ingredient toSave) {
+    private void saveStockMovementList(Connection conn, Ingredient ingredient) {
+
+        if (ingredient.getStockMovementList() == null || ingredient.getStockMovementList().isEmpty()) {
+            return;
+        }
+
         String insertStockMovement = """
-                     INSERT INTO StockMovement (id,id_ingredient ,quantity,type, unit, creation_datetime)
-                                    VALUES (?,  ?, ?,?::mouvement_type,?::unit_type,?)
-                                    ON CONFLICT (id) DO NOTHING
-                                 """;
-        DBConnection dbConnection = new DBConnection();
-        Connection conn = dbConnection.getConnection();
+        INSERT INTO StockMovement (id, id_ingredient, quantity, type, unit, creation_datetime)
+        VALUES (?, ?, ?, ?::mouvement_type, ?::unit_type, ?)
+        ON CONFLICT (id) DO NOTHING
+    """;
+
         try (PreparedStatement ps = conn.prepareStatement(insertStockMovement)) {
-            for (StockMovement stock : toSave.getStockMovementList()) {
-                ps.setInt(1,stock.getId());
-                ps.setInt(2,toSave.getId());
-                ps.setDouble(3,stock.getValue().getQuantity());
-                ps.setString(4,stock.getMovementtype().name());
-                ps.setString(5,stock.getValue().getUnit().name());
-                ps.setString(6,stock.getCreationDateTime().toString());
-                ps.executeUpdate(); // ✅ EXECUTE DANS LA BOUCLE
+
+            for (StockMovement stock : ingredient.getStockMovementList()) {
+
+                ps.setInt(1, stock.getId());
+                ps.setInt(2, ingredient.getId());
+                ps.setDouble(3, stock.getValue().getQuantity());
+                ps.setString(4, stock.getMovementtype().name());
+                ps.setString(5, stock.getValue().getUnit().name());
+                ps.setTimestamp(6, Timestamp.from(stock.getCreationDateTime())); // ✅ CORRECT
+
+                ps.executeUpdate();
             }
+
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
+    }
 
-    }
-    }
+
+}
 
 //    public List<Ingredient> createIngredients(List<Ingredient> newIngredients) {
 //        if (newIngredients == null || newIngredients.isEmpty()) {

@@ -11,6 +11,7 @@ public class TestDataRetriever {
     public void testFindDishById() {
       DataRetriever dataRetriever = new DataRetriever();
      Integer dishId= 1;
+     Integer dishIdNotFind = 999;
         Dish dish = dataRetriever.findDishById(dishId);
 
         assertNotNull(dish);
@@ -18,6 +19,9 @@ public class TestDataRetriever {
         assertEquals(2,dish.getDishIngredients().size());
         assertEquals("Laitue",dish.getDishIngredients().getFirst().getIngredient().getName());
         assertEquals("Tomate",dish.getDishIngredients().getLast().getIngredient().getName());
+
+
+
     }
 }
 

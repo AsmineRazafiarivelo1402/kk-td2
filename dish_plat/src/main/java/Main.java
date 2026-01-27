@@ -98,6 +98,36 @@ public class Main {
 //        List<StockMovement> stockMovements = List.of(stock1,stock2);
 //        Ingredient laitue = new Ingredient(1,"Laitue",800.00, CategoryEnum.VEGETABLE,stockMovements);
 //        System.out.println(laitue.getStockValueAt(Instant.parse("2024-01-06T12:00:00Z")));
+// ===== StockValue 1 =====
+        StockValue stockValue1 = new StockValue(); stockValue1.setQuantity(50.0); stockValue1.setUnit(Unit.KG);
+
+        // ===== StockMovement 1 (IN) =====
+        StockMovement stock1 = new StockMovement(); stock1.setId(20); stock1.setValue(stockValue1); stock1.setMovementtype(Movementtype.IN); stock1.setCreationDateTime(Instant.now());
+
+        // ===== StockValue 2 =====
+        StockValue stockValue2 = new StockValue(); stockValue2.setQuantity(10.0); stockValue2.setUnit(Unit.KG);
+
+        // ===== StockMovement 2 (OUT) =====
+        StockMovement stock2 = new StockMovement(); stock2.setId(21); stock2.setValue(stockValue2); stock2.setMovementtype(Movementtype.OUT); stock2.setCreationDateTime(Instant.now());
+
+        // ===== Ingredient =====
+        Ingredient ingredient = new Ingredient();
+        ingredient.setId(20);
+        ingredient.setName("Been");
+        ingredient.setCategory(CategoryEnum.VEGETABLE);
+        ingredient.setPrice(1200.0);
+        ingredient.setStockMovementList(List.of(stock1, stock2));
+
+        // ===== Save =====
+
+        dataRetriever.saveIngredient(ingredient);
+
+        System.out.println("Ingredient et mouvements de stock enregistrés avec succès");
+
+
+
+
+
 
     }
 }
