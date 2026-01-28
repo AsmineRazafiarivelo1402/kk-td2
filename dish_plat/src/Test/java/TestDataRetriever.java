@@ -1,6 +1,7 @@
 import org.junit.jupiter.api.Test;
 import org.testng.annotations.BeforeMethod;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -50,6 +51,10 @@ public class TestDataRetriever {
         DataRetriever dataRetriever = new DataRetriever();
         List<DishIngredient> listIngredient = dataRetriever.findIngredientsByCriteria(null,CategoryEnum.VEGETABLE,null,1,10);
         assertEquals(2,listIngredient.size());
+        List<DishIngredient> listVide = new ArrayList<>();
+        CategoryEnum categoryNull= null;
+        List<DishIngredient> listIngredientVide = dataRetriever.findIngredientsByCriteria("cho",categoryNull,"Sal",1,10);
+        assertEquals(0,listIngredientVide.size());
     }
 }
 
