@@ -44,3 +44,9 @@ alter table ingredient
 select dish.id, dish.name,dish.dish_type,dish.selling_price dish from dish;
 select ingredient.id, ingredient.name, ingredient.price , ingredient.category from ingredient ;
 select ingredient.id, ingredient.name, ingredient.price , ingredient.category from ingredient limit 3 offset 5;
+select id_ingredient,id_dish,dish.name,
+       ingredient.id AS idIngredient, ingredient.name AS ingredient_name, ingredient.price,ingredient.category , dish.name AS dish_name
+from DishIngredient
+         join dish on dish.id = id_dish
+         join ingredient on ingredient.id= id_ingredient
+where ingredient.name = null or ingredient.category = 'VEGETABLE' or dish.name = null LIMIT 1 OFFSET 10;

@@ -44,6 +44,13 @@ public class TestDataRetriever {
         assertEquals(1,dishes.size());
         assertEquals("Gâteau au chocolat ",dishes.getFirst().getName());
     }
+
+    @Test
+    public void testIngredientsByCriteria(){
+        DataRetriever dataRetriever = new DataRetriever();
+        List<DishIngredient> listIngredient = dataRetriever.findIngredientsByCriteria(null,CategoryEnum.VEGETABLE,null,1,10);
+        assertEquals(2,listIngredient.size());
+    }
 }
 
 
