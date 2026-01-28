@@ -3,5 +3,6 @@
   <component name="SqlDialectMappings">
     <file url="file://$PROJECT_DIR$/dish_plat/src/main/java/DataRetriever.java" dialect="GenericSQL" />
     <file url="file://$PROJECT_DIR$/dish_plat/src/main/resources/sql/new_schema.sql" dialect="PostgreSQL" />
+    <file url="file://$PROJECT_DIR$/dish_plat/src/main/resources/sql/schema.sql" dialect="PostgreSQL" />
   </component>
 </project>

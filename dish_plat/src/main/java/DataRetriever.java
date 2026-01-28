@@ -104,7 +104,7 @@ public class DataRetriever {
             throw new RuntimeException(e);
         }
     }
-    List<Dish> findDishsByIngredientName(String IngredientName){
+    List<Dish> findDishByIngredientName(String ingredientName){
         String dishSelect = """
                  select dish.id, dish.name, dish.dish_type, dish.selling_price
                             from DishIngredient join dish on dish.id = DishIngredient.id_dish
@@ -117,7 +117,7 @@ public class DataRetriever {
         Integer id_dish;
         try {
             PreparedStatement preparedStatement = connection.prepareStatement(dishSelect);
-            preparedStatement.setString(1, IngredientName);
+            preparedStatement.setString(1, "%" + ingredientName + "%");
             ResultSet resultSet = preparedStatement.executeQuery();
 
             if (resultSet.next()) {
@@ -131,7 +131,7 @@ public class DataRetriever {
                 return dishes;
             }
             dbConnection.closeConnection(connection);
-            throw new RuntimeException("Dish not found " + IngredientName);
+            throw new RuntimeException("Dish not found with ingredient " + ingredientName);
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }

@@ -1,6 +1,8 @@
 import org.junit.jupiter.api.Test;
 import org.testng.annotations.BeforeMethod;
 
+import java.util.List;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 public class TestDataRetriever {
@@ -24,17 +26,23 @@ public class TestDataRetriever {
             );
 
             assertEquals("Dish not found "+dishIdNotFind, exception.getMessage());
-
-
-
-
     }
 
     @Test
     public void testFindIngredients(){
         DataRetriever dataRetriever = new DataRetriever();
+        List<Ingredient> listIngredient = dataRetriever.findIngredients(2,2);
+        assertEquals(2,listIngredient.size());
+        assertEquals("Poulet",listIngredient.getFirst().getName());
+        assertEquals("Chocolat ", listIngredient.getLast().getName());
+    }
 
-
+    @Test
+    public void testFindDishByIngredientName(){
+        DataRetriever dataRetriever = new DataRetriever();
+        List<Dish> dishes   = dataRetriever.findDishByIngredientName("eur");
+        assertEquals(1,dishes.size());
+        assertEquals("Gâteau au chocolat ",dishes.getFirst().getName());
     }
 }
 

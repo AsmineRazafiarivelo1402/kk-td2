@@ -42,5 +42,5 @@ alter table ingredient
 -- //    métho
 
 select dish.id, dish.name,dish.dish_type,dish.selling_price dish from dish;
-select ingredient.id, ingredient.name, ingredient.price , ingredient.category, ingredient.id_dish from ingredient where name ilike %?%;
-
+select ingredient.id, ingredient.name, ingredient.price , ingredient.category from ingredient ;
+select ingredient.id, ingredient.name, ingredient.price , ingredient.category from ingredient limit 3 offset 5;

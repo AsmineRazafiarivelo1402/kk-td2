@@ -1,6 +1,3 @@
-
-
-
 create type unit_type as enum('PCS','KG','L');
 create table DishIngredient(
                                id serial primary key ,
@@ -71,7 +68,7 @@ select id_ingredient,id_dish,dish.name,
 from DishIngredient
          join dish on dish.id = id_dish
          join ingredient on ingredient.id= id_ingredient
-where ingredient.name ilike '%laitue%' or ingredient.category ='VEGETABLE' or dish.name ilike '%salade%' LIMIT 2 OFFSET 1
+where ingredient.name ilike '%laitue%' or ingredient.category ='VEGETABLE' or dish.name ilike '%salade%' LIMIT 2 OFFSET 1;
 
 
 create type mouvement_type as enum('IN','OUT');
@@ -123,3 +120,7 @@ CREATE TABLE DishOrder(
     quantity int
 );
 select id_dish,dish.id, dish.name, dish.dish_type, dish.selling_price  from DishIngredient join dish on dish.id = id_dish join ingredient on ingredient.id= id_ingredient  where dish.id = 99;
+select dish.id, dish.name, dish.dish_type, dish.selling_price
+from DishIngredient join dish on dish.id = DishIngredient.id_dish
+                    join ingredient on ingredient.id= id_ingredient
+where ingredient.name  ilike '%eur%';
