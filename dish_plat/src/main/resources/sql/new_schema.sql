@@ -106,7 +106,20 @@ SELECT
              ), 0) AS stock,
     unit
 FROM StockMovement
-WHERE creation_datetime <= '2024-01-06 12:00'
+WHERE   id_ingredient =1 and  creation_datetime <= '2024-01-06 12:00'
 GROUP BY unit;
 
 select StockMovement.quantity, StockMovement.type from StockMovement where creation_datetime = '2024-01-06 12:00';
+
+CREATE TABLE order(
+    id serial primary key ,
+    reference_order varchar(8),
+    creation_datetime timestamp
+);
+CREATE TABLE DishOrder(
+    id serial primary key ,
+    id_order int references order(id),
+    id_dish int references dish(id),
+    quantity int
+);
+select id_dish,dish.id, dish.name, dish.dish_type, dish.selling_price  from DishIngredient join dish on dish.id = id_dish join ingredient on ingredient.id= id_ingredient  where dish.id = 99;

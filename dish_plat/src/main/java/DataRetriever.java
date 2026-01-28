@@ -21,6 +21,7 @@ public class DataRetriever {
             if (resultSet.next()) {
 
                 Dish dish = new Dish();
+
                 dish.setId(resultSet.getInt("id_dish"));
                 dish.setName(resultSet.getString("name"));
                 dish.setDishType(DishTypeEnum.valueOf(resultSet.getString("dish_type")));
@@ -462,7 +463,18 @@ public class DataRetriever {
             throw new RuntimeException(e);
         }
     }
+    Order saveOrder(Order orderToSave){
+        String insertSql = """
+                Insert into order (reference_order, creation_datetime) values (?,?) 
+                ON CONFLICT DO NOT NOTHING
+                """;
 
+        return orderToSave;
+    }
+    Order findOrderByReference(String reference){
+        Order order = new Order();
+        return order;
+    }
 
 }
 

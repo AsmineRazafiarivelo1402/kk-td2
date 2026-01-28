@@ -1,8 +1,7 @@
 import org.junit.jupiter.api.Test;
 import org.testng.annotations.BeforeMethod;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class TestDataRetriever {
 
@@ -19,7 +18,21 @@ public class TestDataRetriever {
         assertEquals(2,dish.getDishIngredients().size());
         assertEquals("Laitue",dish.getDishIngredients().getFirst().getIngredient().getName());
         assertEquals("Tomate",dish.getDishIngredients().getLast().getIngredient().getName());
+         IllegalArgumentException exception = assertThrows(
+                    IllegalArgumentException.class,
+                    () -> { throw new IllegalArgumentException("Dish not found "+dishIdNotFind); }
+            );
 
+            assertEquals("Dish not found "+dishIdNotFind, exception.getMessage());
+
+
+
+
+    }
+
+    @Test
+    public void testFindIngredients(){
+        DataRetriever dataRetriever = new DataRetriever();
 
 
     }

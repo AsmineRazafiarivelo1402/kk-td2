@@ -93,6 +93,7 @@ public class Dish {
         }
         return totalPrice;
     }
+
     public Double getGrossMargin() {
         if (selling_price == null) {
             throw new RuntimeException("Price is null");
