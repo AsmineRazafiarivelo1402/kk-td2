@@ -7,18 +7,6 @@ create table DishIngredient(
                                unit unit_type
 );
 
-insert into DishIngredient( id_dish, id_ingredient, quantity_required, unit)
-values(1,1,0.20,'KG'),
-      (1,2,0.15,'KG'),
-      (2,3,1.00,'KG'),
-      (4,4,0.30,'KG'),
-      (4,5,0.20,'KG');
-insert into dish( name, dish_type,selling_price)
-values ('salade fraiche','STARTER',3500.00),
-       ('Poulet grilleé','MAIN',12000.00),
-       ('riz aux légumes','MAIN',NULL),
-       ('Gâteau au chocolat','DESSERT',8000.00),
-       ('salade de fruits','DESSERT',NULL);
 -- ALTER TABLE dish rename column price to selling_price;
 UPDATE dish
 SET selling_price = 3500.00
@@ -80,18 +68,9 @@ Create table StockMovement (
     unit unit_type,
     creation_datetime timestamp
 );
-INSERT INTO StockMovement  (id,id_ingredient,quantity,type,unit,creation_datetime)
-values
-(1,1,5.0,'IN','KG','2024-01-05 08:00'),
-(2,1,0.2,'OUT','KG','2024-01-06 12:00'),
-(3,2,4.0,'IN','KG','2024-01-05 08:00'),
-(4,2,0.15,'OUT','KG','2024-01-06 12:00'),
-(5,3,10.0,'IN','KG','2024-01-04 09:00'),
-(6,3,1.0,'OUT','KG','2024-01-06 13:00'),
-(7,4,3.0,'IN','KG','2024-01-05 10:00'),
-(8,4,0.3,'OUT','KG','2024-01-05 14:00'),
-(9,5,2.5,'IN','KG','2024-01-05 08:00'),
-(10,5,0.2,'OUT','KG','2024-01-06 14:00');
+--- update numeric (10,2)
+--- update timestamp zone
+
  select  * from stockmovement;
 select * from  ingredient;
 SELECT
@@ -108,14 +87,14 @@ GROUP BY unit;
 
 select StockMovement.quantity, StockMovement.type from StockMovement where creation_datetime = '2024-01-06 12:00';
 
-CREATE TABLE order(
+CREATE TABLE if not exists "order"(
     id serial primary key ,
     reference_order varchar(8),
     creation_datetime timestamp
 );
-CREATE TABLE DishOrder(
+CREATE TABLE if NOT EXISTS DishOrder(
     id serial primary key ,
-    id_order int references order(id),
+    id_order int references "order"(id),
     id_dish int references dish(id),
     quantity int
 );
@@ -124,3 +103,21 @@ select dish.id, dish.name, dish.dish_type, dish.selling_price
 from DishIngredient join dish on dish.id = DishIngredient.id_dish
                     join ingredient on ingredient.id= id_ingredient
 where ingredient.name  ilike '%eur%';
+
+select * from "order";
+create type ordertype as enum('EAT_IN','TAKE_AWAY');
+create type orderStatus AS enum('CREATED','DELIVERED','READY');
+
+ALTER TABLE "order"
+    ADD COLUMN order_type ordertype NOT NULL ,
+    ADD COLUMN order_status orderStatus NOT NULL ;
+
+ALTER TABLE "order"
+    ALTER COLUMN order_type DROP NOT NULL;
+ALTER TABLE "order"
+    ALTER COLUMN order_status DROP NOT NULL;
+
+ALTER TABLE "order"
+    ALTER COLUMN reference_order TYPE VARCHAR(8);
+DELETE FROM "order"
+WHERE id = 14;

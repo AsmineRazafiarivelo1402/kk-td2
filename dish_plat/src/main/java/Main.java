@@ -9,9 +9,9 @@ import java.util.List;
 public class Main {
     public static void main(String[] args) {
         // Log before changes
-        DataRetriever dataRetriever = new DataRetriever();
-        Dish dish = dataRetriever.findDishById(87);
-        System.out.println(dish);
+//        DataRetriever dataRetriever = new DataRetriever();
+//        Dish dish = dataRetriever.findDishById(87);
+//        System.out.println(dish);
 //        List<Dish> dishes   = dataRetriever.findDishsByIngredientName("tomate");
 //        System.out.println(dishes);
 //        List<Ingredient> ingredients = dataRetriever.findIngredients(1,2);
@@ -123,11 +123,126 @@ public class Main {
 //        dataRetriever.saveIngredient(ingredient);
 //
 //        System.out.println("Ingredient et mouvements de stock enregistrés avec succès");
+//        Dish dish1 = dataRetriever.findDishById(3);
+//        System.out.println(dish1);
+//        DishOrder dishOrder = new DishOrder(dish1,1);
+//        List<DishOrder> dishOrderList = new ArrayList<>();
+//        dishOrderList.add(dishOrder);
+//        Order order = new Order(Instant.now(),dishOrderList, "ORD00003");
+//        Order orderSave = dataRetriever.saveOrder(order);
+//        Order orderfind = dataRetriever.findOrderByReference("ORD00003");
+//        System.out.println(orderfind);
+//        System.out.println(orderSave);
 
 
+        DataRetriever dataRetriever = new DataRetriever();
+
+//        // 1️⃣ Récupérer un plat existant
+//        Dish dish = dataRetriever.findDishById(2);
+//        System.out.println("Plat trouvé : " + dish);
+//
+//        // 2️⃣ Créer DishOrder (plat + quantité)
+//        DishOrder dishOrder = new DishOrder(
+//                dish,   // plat
+//                1,      // quantité de plats commandés
+//                4      // id client (ou autre selon ton modèle)
+//        );
+//
+//        List<DishOrder> dishOrders = new ArrayList<>();
+//        dishOrders.add(dishOrder);
+//
+//        // 3️⃣ Créer la commande
+//        Order orderToSave = new Order(
+//                Instant.now(),   // date création
+//                dishOrders,      // liste des plats
+//                3,               // id client
+//                null             // reference (générée en DB)
+//        );
+//
+//        // 4️⃣ Sauvegarder la commande
+//        Order savedOrder = dataRetriever.saveOrder(orderToSave);
+//
+//        // 5️⃣ Rechercher la commande par référence
+//        Order foundOrder =
+//                dataRetriever.findOrderByReference(
+//                        savedOrder.getReference()
+//                );
+//
+//        // 6️⃣ Affichage des résultats
+//        System.out.println("Commande sauvegardée : " + savedOrder);
+//        System.out.println("Commande retrouvée   : " + foundOrder);
 
 
+//        // ✅ 1️⃣ Récupérer un plat existant
+//        Dish dish1 = dataRetriever.findDishById(2);
+//
+//        // Créer DishOrder : 1 plat commandé
+//        DishOrder dishOrder = new DishOrder(dish1, 2, 1);
+//        List<DishOrder> dishOrderList = new ArrayList<>();
+//        dishOrderList.add(dishOrder);
+//
+//        // ✅ 2️⃣ Créer une commande avec référence manuelle ORD00002
+//        Order manualOrder = new Order(
+//                        Instant.now(),
+//                        dishOrderList,
+//                        1,
+//                        "ORD00002",
+//                StatusOrder.CREATED,
+//                OrderType.TAKE_AWAY
+//                );
+//
+//
+//        // ✅ 3️⃣ Sauvegarder la commande
+//        Order savedManualOrder = dataRetriever.saveOrder(manualOrder);
+//
+//        // ✅ 4️⃣ Récupérer la commande pour vérifier
+//        Order foundOrder = dataRetriever.findOrderByReference("ORD00002");
+//
+//        // ✅ 5️⃣ Affichage pour test
+//        System.out.println("Commande sauvegardée : " + savedManualOrder);
+//        System.out.println("Commande retrouvée : " + foundOrder);
 
+// 🔹 1️⃣ Récupérer un plat depuis la base
+        Dish dish2 = dataRetriever.findDishById(3); // suppose que ce plat existe en DB
+
+// 🔹 Créer DishOrder : 1 plat commandé, quantité 3
+        DishOrder dishOrder2 = new DishOrder(dish2, 3, 1); // id fictif du DishOrder
+        List<DishOrder> dishOrderList2 = new ArrayList<>();
+        dishOrderList2.add(dishOrder2);
+
+// 🔹 2️⃣ Créer une commande avec référence manuelle ORD00003
+        Order manualOrder2 = new Order(
+                Instant.now(),             // date de création
+                dishOrderList2,            // liste de plats
+                2,                         // id (peut être id client ou autre)
+                "ORD00003",                // référence manuelle
+                StatusOrder.CREATED,       // statut initial
+                OrderType.EAT_IN           // type de la commande
+        );
+
+// 🔹 3️⃣ Sauvegarder la commande
+        Order savedManualOrder2 = dataRetriever.saveOrder(manualOrder2);
+
+// 🔹 4️⃣ Récupérer la commande pour vérifier
+        Order foundOrder2 = dataRetriever.findOrderByReference("ORD00003");
+
+// 🔹 5️⃣ Affichage pour test
+        System.out.println("Commande sauvegardée : " + savedManualOrder2);
+        System.out.println("Commande retrouvée : " + foundOrder2);
+
+// 🔹 6️⃣ Tester la règle DELIVERED
+        foundOrder2.setStatusOrder(StatusOrder.DELIVERED);
+        try {
+            dataRetriever.saveOrder(foundOrder2);
+        } catch (RuntimeException e) {
+            System.out.println("Test règle DELIVERED OK : " + e.getMessage());
+        }
 
     }
-}
+
+
+        }
+
+
+
+

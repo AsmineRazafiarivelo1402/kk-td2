@@ -1,6 +1,8 @@
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.testng.annotations.BeforeMethod;
 
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -55,7 +57,83 @@ public class TestDataRetriever {
         CategoryEnum categoryNull= null;
         List<DishIngredient> listIngredientVide = dataRetriever.findIngredientsByCriteria("cho",categoryNull,"Sal",1,10);
         assertEquals(0,listIngredientVide.size());
+        assertEquals(listVide,listIngredientVide);
     }
-}
+
+
+
+
+        private DataRetriever dataRetriever;
+
+        @BeforeEach
+        void setup() {
+            dataRetriever = new DataRetriever();
+        }
+
+        @Test
+        void testSaveAndFindOrder() {
+            // 🔹 1️⃣ Créer un plat
+            Dish dish = dataRetriever.findDishById(2);
+
+            // 🔹 2️⃣ Créer DishOrder
+            DishOrder dishOrder = new DishOrder(dish, 2, 1);
+            List<DishOrder> dishOrderList = new ArrayList<>();
+            dishOrderList.add(dishOrder);
+
+            // 🔹 3️⃣ Créer Order avec type et statut
+            Order order = new Order(
+                    Instant.now(),
+                    dishOrderList,
+                    1,
+                    "ORD00007",
+                    StatusOrder.CREATED,
+                    OrderType.EAT_IN
+            );
+
+            // 🔹 4️⃣ Sauvegarder la commande
+            Order savedOrder = dataRetriever.saveOrder(order);
+
+            assertNotNull(savedOrder.getId(), "L'ID doit être généré");
+            assertEquals("ORD00007", savedOrder.getReference());
+
+
+
+            // 🔹 5️⃣ Récupérer la commande
+            Order foundOrder = dataRetriever.findOrderByReference("ORD00001");
+            assertNotNull(foundOrder);
+
+            assertEquals(OrderType.EAT_IN, foundOrder.getOrderType());
+            assertEquals(StatusOrder.CREATED, foundOrder.getStatusOrder());
+
+        }
+
+        @Test
+        void testDeliveredOrderCannotBeModified() {
+            // 🔹 Créer un plat et DishOrder
+            Dish dish = dataRetriever.findDishById(2);
+            DishOrder dishOrder = new DishOrder(dish, 1, 1);
+            List<DishOrder> dishOrderList = new ArrayList<>();
+            dishOrderList.add(dishOrder);
+
+            // 🔹 Créer une commande
+            Order order = new Order(
+                    Instant.now(),
+                    dishOrderList,
+                    1,
+                    "ORD_UNIT_02",
+                    StatusOrder.DELIVERED,  // statut DELIVERED
+                    OrderType.TAKE_AWAY
+            );
+
+            // 🔹 Vérifier que saveOrder lève bien l'exception
+            RuntimeException exception = assertThrows(RuntimeException.class, () -> {
+                dataRetriever.saveOrder(order);
+            });
+            assertEquals("Une commande livrée ne peut plus être modifiée", exception.getMessage());
+        }
+    }
+
+
+
 
 

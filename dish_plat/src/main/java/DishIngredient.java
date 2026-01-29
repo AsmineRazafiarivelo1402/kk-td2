@@ -7,13 +7,13 @@ public class DishIngredient {
     private Ingredient ingredient;
 
 
-    private BigDecimal quantity_required;
+    private double quantity_required;
     private Unit unit_tupe;
 
     public DishIngredient() {
     }
 
-    public DishIngredient(Integer id, Dish dish, Ingredient ingredient, BigDecimal quantity_required, Unit unit_tupe) {
+    public DishIngredient(Integer id, Dish dish, Ingredient ingredient, double quantity_required, Unit unit_tupe) {
         this.dish = dish;
         this.id = id;
         this.ingredient = ingredient;
@@ -21,7 +21,7 @@ public class DishIngredient {
         this.unit_tupe = unit_tupe;
     }
 
-    public void setQuantity_required(BigDecimal quantity_required) {
+    public void setQuantity_required(double quantity_required) {
         this.quantity_required = quantity_required;
     }
     public Dish getDish() {
@@ -48,7 +48,7 @@ public class DishIngredient {
         this.ingredient = ingredient;
     }
 
-    public BigDecimal getQuantity_required() {
+    public double getQuantity_required() {
         return quantity_required;
     }
 

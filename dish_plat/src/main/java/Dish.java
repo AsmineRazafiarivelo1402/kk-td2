@@ -85,7 +85,7 @@ public class Dish {
         double totalPrice = 0;
         for (int i = 0; i < dishIngredients.size(); i++) {
 
-            Double quantity = dishIngredients.get(i).getQuantity_required().doubleValue();
+            Double quantity = dishIngredients.get(i).getQuantity_required();
             if(quantity == null) {
                 throw new RuntimeException("...");
             }

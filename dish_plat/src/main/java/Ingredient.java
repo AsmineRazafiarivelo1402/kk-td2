@@ -1,7 +1,10 @@
 import java.sql.*;
 import java.time.Instant;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
+import java.util.stream.Collectors;
+import java.util.stream.DoubleStream;
 
 public class Ingredient {
     private Integer id;
@@ -89,45 +92,47 @@ public class Ingredient {
                 ", stockMovementList=" + stockMovementList +
                 '}';
     }
-    public StockValue getStockValueAt(Instant instant) {
+    // CORRECTION FOR STOCKMOVEMENT
+    public StockValue getStockValueAt(Instant t) {
 
-        String findStock = """
-        SELECT 
-            COALESCE(SUM(
-                CASE 
-                    WHEN type = 'IN'  THEN quantity
-                    WHEN type = 'OUT' THEN -quantity
-                END
-            ), 0) AS stock,
-            unit
-        FROM StockMovement
-        WHERE id_ingredient = ?
-          AND creation_datetime <= ?
-        GROUP BY unit
-    """;
-
-        DBConnection dbConnection = new DBConnection();
-        Connection connection = dbConnection.getConnection();
-
-        try {
-            PreparedStatement ps = connection.prepareStatement(findStock);
-            ps.setInt(1, this.getId()); // 👈 ingrédient courant
-            ps.setTimestamp(2, Timestamp.from(instant));
-
-            ResultSet rs = ps.executeQuery();
-
-            StockValue value = new StockValue();
-
-            if (rs.next()) {
-                value.setQuantity(rs.getDouble("stock"));
-                value.setUnit(Unit.valueOf(rs.getString("unit")));
-            }
-
-            return value;
-
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
+        // ✅ Toujours retourner un StockValue
+        if (stockMovementList == null || stockMovementList.isEmpty()) {
+            StockValue stockValue = new StockValue();
+            stockValue.setQuantity(0.0);
+            stockValue.setUnit(Unit.KG); // ou unité par défaut
+            return stockValue;
         }
+
+        Map<Unit, List<StockMovement>> unitSet =
+                stockMovementList.stream()
+                        .collect(Collectors.groupingBy(sm -> sm.getValue().getUnit()));
+
+        if (unitSet.keySet().size() > 1) {
+            throw new RuntimeException("Multiple unit found and not handled");
+        }
+
+        List<StockMovement> stockMovements =
+                stockMovementList.stream()
+                        .filter(sm -> !sm.getCreationDateTime().isAfter(t))
+                        .toList();
+
+        double movementIn =
+                stockMovements.stream()
+                        .filter(sm -> sm.getMovementtype() == Movementtype.IN)
+                        .mapToDouble(sm -> sm.getValue().getQuantity())
+                        .sum();
+
+        double movementOut =
+                stockMovements.stream()
+                        .filter(sm -> sm.getMovementtype() == Movementtype.OUT)
+                        .mapToDouble(sm -> sm.getValue().getQuantity())
+                        .sum();
+
+        StockValue stockValue = new StockValue();
+        stockValue.setQuantity(movementIn - movementOut);
+        stockValue.setUnit(unitSet.keySet().iterator().next());
+
+        return stockValue;
     }
 
 
