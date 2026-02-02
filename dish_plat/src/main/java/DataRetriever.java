@@ -634,40 +634,31 @@ String upsertDishSql = """
             }
         }
     }
-private boolean IsDelivered(Order orderToSave) {
-    DBConnection dbConnection = new DBConnection();
-    String isDeliverSql = """
-            select  "order".order_status from "order" where reference_order = ?;
-            """;
-    boolean isDeliver;
-    try (Connection connection = dbConnection.getConnection();
-         PreparedStatement ps = connection.prepareStatement(isDeliverSql)) {
 
-        ps.setString(1, orderToSave.getReference());
-        ResultSet rs = ps.executeQuery();
+    private boolean orderExists(String orderReference) {
 
-        isDeliver = false;
-        if (rs.next()) {
-            String statusString = rs.getString("order_status");
+        String sql = """
+        SELECT 1
+        FROM "order"
+        WHERE reference_order = ?
+    """;
 
-            if (statusString != null
-                    && OrderStatus.DELIVERED.name().equalsIgnoreCase(statusString)) {
-                isDeliver = true;
+        try (Connection connection = new DBConnection().getConnection();
+             PreparedStatement ps = connection.prepareStatement(sql)) {
+
+            ps.setString(1, orderReference);
+
+            try (ResultSet rs = ps.executeQuery()) {
+                return rs.next(); // true si la référence existe
             }
+
+        } catch (SQLException e) {
+            throw new RuntimeException("Erreur lors de la vérification de l'existence de la commande", e);
         }
     }
 
-    catch (SQLException e) {
-        throw new RuntimeException(e);
-    }
-    return isDeliver;
-}
 public Order saveOrder(Order orderToSave) {
-    if (orderToSave.getOrderStatus() == OrderStatus.DELIVERED) {
-        throw new RuntimeException(
-                "Une commande livrée ne peut plus être modifiée"
-        );
-    }
+
     for (DishOrder dishOrder : orderToSave.getDishOrders()) {
         Dish dish = dishOrder.getDish();
         int dishQuantity = dishOrder.getQuantity();
@@ -688,40 +679,82 @@ public Order saveOrder(Order orderToSave) {
             }
         }
     }
+    boolean hasReference = orderToSave.getReference() != null;
+    boolean existsInDb = false;
 
-    String insertOrder;
-    if (orderToSave.getReference() == null) {
-        // Générer automatiquement la référence
-        insertOrder = """
-            INSERT INTO "order" (reference_order, creation_datetime,order_status,order_type)
-            VALUES ('ORD' || LPAD(nextval('order_reference_seq')::text, 5, '0'), ?,?::OrderStatus,?::OrderType)
+    if (hasReference) {
+        existsInDb = orderExists(orderToSave.getReference());
+    }
+
+    String sql;
+
+    // 2️⃣ Choix du SQL selon les 3 cas
+    if (!hasReference) {
+        // CAS 1 : nouvelle commande, référence auto
+        sql = """
+            INSERT INTO "order" (reference_order, creation_datetime, order_status, order_type)
+            VALUES (
+                'ORD' || LPAD(nextval('order_reference_seq')::text, 5, '0'),
+                ?, ?::orderStatus, ?::Ordertype
+            )
             RETURNING id, reference_order
         """;
+
+    } else if (!existsInDb) {
+        // CAS 2 : nouvelle commande avec référence manuelle
+        sql = """
+            INSERT INTO "order" (reference_order, creation_datetime, order_status, order_type)
+            VALUES (?, ?, ?::orderStatus, ?::Ordertype)
+            RETURNING id, reference_order
+        """;
+
     } else {
-        // Utiliser la référence manuelle
-        insertOrder = """
-            INSERT INTO "order" (reference_order, creation_datetime,order_status,order_type)
-            VALUES (?, ?,?::OrderStatus,?::OrderType)
+        // CAS 3 : commande existante → UPDATE (bloqué si DELIVERED)
+        sql = """
+            UPDATE "order"
+            SET creation_datetime = ?,
+                order_status = ?::orderStatus,
+                order_type = ?::Ordertype
+            WHERE reference_order = ?
+              AND order_status <> 'DELIVERED'
             RETURNING id, reference_order
         """;
     }
 
+    // 3️⃣ Exécution
     try (Connection conn = new DBConnection().getConnection();
-         PreparedStatement ps = conn.prepareStatement(insertOrder)) {
+         PreparedStatement ps = conn.prepareStatement(sql)) {
 
         conn.setAutoCommit(false);
 
-        if (orderToSave.getReference() == null) {
-            // Automatique → juste la date à paramétrer
+        // 4️⃣ Paramètres SQL
+        if (!hasReference) {
+            // cas 1
             ps.setTimestamp(1, Timestamp.from(orderToSave.getCreationDatetime()));
-        } else {
-            // Manuel → référence et date
+            ps.setString(2, orderToSave.getOrderStatus().name());
+            ps.setString(3, orderToSave.getOrderType().name());
+
+        } else if (!existsInDb) {
+            // cas 2
             ps.setString(1, orderToSave.getReference());
             ps.setTimestamp(2, Timestamp.from(orderToSave.getCreationDatetime()));
+            ps.setString(3, orderToSave.getOrderStatus().name());
+            ps.setString(4, orderToSave.getOrderType().name());
+
+        } else {
+            // cas 3
+            ps.setTimestamp(1, Timestamp.from(orderToSave.getCreationDatetime()));
+            ps.setString(2, orderToSave.getOrderStatus().name());
+            ps.setString(3, orderToSave.getOrderType().name());
+            ps.setString(4, orderToSave.getReference());
         }
 
+        // 5️⃣ Résultat
         try (ResultSet rs = ps.executeQuery()) {
-            rs.next();
+            if (!rs.next()) {
+                throw new RuntimeException("Commande déjà livrée ou inexistante");
+            }
+
             orderToSave.setId(rs.getInt("id"));
             orderToSave.setReference(rs.getString("reference_order"));
         }

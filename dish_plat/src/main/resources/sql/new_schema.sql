@@ -130,4 +130,4 @@ INSERT INTO "order" (id,reference_order,order_type,order_status,creation_datetim
 select * from "order";
 delete from "order" where reference_order = '0RD102';
 
-select "order".id, "order".reference_order, "order".creation_datetime, "order".order_status, "order".order_type from "order" where reference_order = 'ORD102';
+select "order".id, "order".reference_order, "order".creation_datetime, "order".order_status, "order".order_type from "order" ;

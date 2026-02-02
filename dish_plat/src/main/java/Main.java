@@ -3,7 +3,7 @@ public class Main {
     DataRetriever dataRetriever = new DataRetriever();
     Order order = dataRetriever.findOrderByReference("ORD102");
     order.setOrderType(OrderType.TAKE_AWAY);
-    order.setStatusOrder(OrderStatus.DELIVERED);
+    order.setOrderStatus(OrderStatus.DELIVERED);
     dataRetriever.saveOrder(order);
 
 
