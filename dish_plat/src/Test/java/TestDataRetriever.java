@@ -1,6 +1,5 @@
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.testng.annotations.BeforeMethod;
 
 import java.time.Instant;
 import java.util.ArrayList;
@@ -86,7 +85,7 @@ public class TestDataRetriever {
                     dishOrderList,
                     1,
                     "ORD00007",
-                    StatusOrder.CREATED,
+                    OrderStatus.CREATED,
                     OrderType.EAT_IN
             );
 
@@ -103,7 +102,7 @@ public class TestDataRetriever {
             assertNotNull(foundOrder);
 
             assertEquals(OrderType.EAT_IN, foundOrder.getOrderType());
-            assertEquals(StatusOrder.CREATED, foundOrder.getStatusOrder());
+            assertEquals(OrderStatus.CREATED, foundOrder.getStatusOrder());
 
         }
 
@@ -121,7 +120,7 @@ public class TestDataRetriever {
                     dishOrderList,
                     1,
                     "ORD_UNIT_02",
-                    StatusOrder.DELIVERED,  // statut DELIVERED
+                    OrderStatus.DELIVERED,  // statut DELIVERED
                     OrderType.TAKE_AWAY
             );
 

@@ -1,3 +1,3 @@
-public enum StatusOrder {
+public enum OrderStatus {
     CREATED,READY,DELIVERED
 }

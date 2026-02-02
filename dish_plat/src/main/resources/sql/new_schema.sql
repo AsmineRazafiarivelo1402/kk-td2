@@ -121,3 +121,13 @@ ALTER TABLE "order"
     ALTER COLUMN reference_order TYPE VARCHAR(8);
 DELETE FROM "order"
 WHERE id = 14;
+
+INSERT INTO "order" (id,reference_order,order_type,order_status,creation_datetime)values
+                                                                                      (1,'ORD100','TAKE_AWAY','DELIVERED','2024-01-06 12:00'),
+                                                                                      (2,'0RD102','EAT_IN','CREATED','2024-01-06 12:00');
+
+INSERT INTO "order" (id,reference_order,order_type,order_status,creation_datetime)values (3,'ORD102','EAT_IN','CREATED','2024-01-06 12:00');
+select * from "order";
+delete from "order" where reference_order = '0RD102';
+
+select "order".id, "order".reference_order, "order".creation_datetime, "order".order_status, "order".order_type from "order" where reference_order = 'ORD102';

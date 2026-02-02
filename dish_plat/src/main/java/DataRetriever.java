@@ -634,9 +634,36 @@ String upsertDishSql = """
             }
         }
     }
+private boolean IsDelivered(Order orderToSave) {
+    DBConnection dbConnection = new DBConnection();
+    String isDeliverSql = """
+            select  "order".order_status from "order" where reference_order = ?;
+            """;
+    boolean isDeliver;
+    try (Connection connection = dbConnection.getConnection();
+         PreparedStatement ps = connection.prepareStatement(isDeliverSql)) {
 
+        ps.setString(1, orderToSave.getReference());
+        ResultSet rs = ps.executeQuery();
+
+        isDeliver = false;
+        if (rs.next()) {
+            String statusString = rs.getString("order_status");
+
+            if (statusString != null
+                    && OrderStatus.DELIVERED.name().equalsIgnoreCase(statusString)) {
+                isDeliver = true;
+            }
+        }
+    }
+
+    catch (SQLException e) {
+        throw new RuntimeException(e);
+    }
+    return isDeliver;
+}
 public Order saveOrder(Order orderToSave) {
-    if (orderToSave.getStatusOrder() == StatusOrder.DELIVERED) {
+    if (orderToSave.getOrderStatus() == OrderStatus.DELIVERED) {
         throw new RuntimeException(
                 "Une commande livrée ne peut plus être modifiée"
         );
@@ -666,15 +693,15 @@ public Order saveOrder(Order orderToSave) {
     if (orderToSave.getReference() == null) {
         // Générer automatiquement la référence
         insertOrder = """
-            INSERT INTO "order" (reference_order, creation_datetime)
-            VALUES ('ORD' || LPAD(nextval('order_reference_seq')::text, 5, '0'), ?)
+            INSERT INTO "order" (reference_order, creation_datetime,order_status,order_type)
+            VALUES ('ORD' || LPAD(nextval('order_reference_seq')::text, 5, '0'), ?,?::OrderStatus,?::OrderType)
             RETURNING id, reference_order
         """;
     } else {
         // Utiliser la référence manuelle
         insertOrder = """
-            INSERT INTO "order" (reference_order, creation_datetime)
-            VALUES (?, ?)
+            INSERT INTO "order" (reference_order, creation_datetime,order_status,order_type)
+            VALUES (?, ?,?::OrderStatus,?::OrderType)
             RETURNING id, reference_order
         """;
     }
@@ -739,7 +766,7 @@ public Order saveOrder(Order orderToSave) {
                 order.setOrderType(typeStr != null ? OrderType.valueOf(typeStr) : null);
 
                 String statusStr = rs.getString("order_status");
-                order.setStatusOrder(statusStr != null ? StatusOrder.valueOf(statusStr) : null);
+                order.setOrderStatus(statusStr != null ? OrderStatus.valueOf(statusStr) : null);
 
                 return order;
             }
@@ -812,8 +839,8 @@ public Order saveOrder(Order orderToSave) {
                 order.setOrderType(
                         OrderType.valueOf(resultSet.getString("order_type"))
                 );
-                order.setStatusOrder(
-                        StatusOrder.valueOf(resultSet.getString("order_status"))
+                order.setOrderStatus(
+                        OrderStatus.valueOf(resultSet.getString("order_status"))
                 );
 
                 order.setDishOrders(findDishOrderByIdOrder(idOrder));

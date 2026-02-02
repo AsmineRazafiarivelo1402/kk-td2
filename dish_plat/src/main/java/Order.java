@@ -8,7 +8,7 @@ public class Order {
     private Instant creationDatetime;
     private List<DishOrder> dishOrders;
     private OrderType orderType;
-    private StatusOrder statusOrder;
+    private OrderStatus orderStatus;
 //- Type de la commande : de type enum, sur place (EAT_IN) ou à emporter
 //(TAKE_AWAY)
 //            - Statut de la commande : de type enum, créé (CREATED), prêt (READY) et livré
@@ -16,20 +16,20 @@ public class Order {
     public Order() {
     }
 
-    public Order(Instant creationDatetime, List<DishOrder> dishOrders, OrderType orderType, String reference, StatusOrder statusOrder) {
+    public Order(Instant creationDatetime, List<DishOrder> dishOrders, OrderType orderType, String reference, OrderStatus orderStatus) {
         this.creationDatetime = creationDatetime;
         this.dishOrders = dishOrders;
         this.reference = reference;
         this.orderType = orderType;
-        this.statusOrder = statusOrder;
+        this.orderStatus = orderStatus;
     }
 
-    public Order(Instant creationDatetime, List<DishOrder> dishOrders, Integer id, String reference, StatusOrder statusOrder, OrderType orderType) {
+    public Order(Instant creationDatetime, List<DishOrder> dishOrders, Integer id, String reference, OrderStatus orderStatus, OrderType orderType) {
         this.creationDatetime = creationDatetime;
         this.dishOrders = dishOrders;
         this.id = id;
         this.reference = reference;
-        this.statusOrder = statusOrder;
+        this.orderStatus = orderStatus;
         this.orderType = orderType;
     }
 
@@ -45,12 +45,12 @@ public class Order {
         this.orderType = orderType;
     }
 
-    public StatusOrder getStatusOrder() {
-        return statusOrder;
+    public OrderStatus getOrderStatus() {
+        return orderStatus;
     }
 
-    public void setStatusOrder(StatusOrder statusOrder) {
-        this.statusOrder = statusOrder;
+    public void setOrderStatus(OrderStatus orderStatus) {
+        this.orderStatus = orderStatus;
     }
 
     public Instant getCreationDatetime() {
