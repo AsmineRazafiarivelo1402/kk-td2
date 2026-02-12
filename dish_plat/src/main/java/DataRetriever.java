@@ -924,7 +924,27 @@ public StockValue getStockValueat(Instant instant, Integer ingredientIdentifier)
 
 
 }
+    Double getDishCost(Integer dishId){
+    String selectPrice = """
+            SELECT sum(i.price ) as total_price from dishingredient join dish on dish.id = dishingredient.id_dish  join ingredient i on dishingredient.id_ingredient = i.id where dishingredient.id_dish = ?;
+            """;
+    DBConnection dbConnection = new DBConnection();
+    Connection connection = dbConnection.getConnection();
+    Double totalPrice =0.0;
+    try{
+        PreparedStatement ps = connection.prepareStatement(selectPrice);
+        ps.setInt(1,dishId);
+        ResultSet rs = ps.executeQuery();
 
+        if(rs.next()){
+            totalPrice = rs.getDouble("total_price");
+        }
+        dbConnection.closeConnection(connection);
+        return totalPrice;
+    } catch (SQLException e) {
+        throw new RuntimeException(e);
+    }
+    }
 }
 
 //    public List<Ingredient> createIngredients(List<Ingredient> newIngredients) {

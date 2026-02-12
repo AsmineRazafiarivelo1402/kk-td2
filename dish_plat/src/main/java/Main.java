@@ -12,6 +12,11 @@ public class Main {
 
 StockValue stockValue = dataRetriever.getStockValueat(Instant.now(),1);
         System.out.println(stockValue);
+        Double price = 0.0;
+        price = dataRetriever.getDishCost(1);
+        System.out.println(price);
+
+
 
         }}
 

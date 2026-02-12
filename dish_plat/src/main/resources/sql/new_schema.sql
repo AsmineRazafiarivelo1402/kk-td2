@@ -141,5 +141,5 @@ SELECT unit,
 FROM StockMovement
 WHERE   id_ingredient =1 and  creation_datetime <= now()
 GROUP BY id_ingredient,unit;
-delete from stockmovement where type = 'OUT';
-select * from stockmovement ;
+
+SELECT sum(i.price ) as total_price from dishingredient join dish on dish.id = dishingredient.id_dish  join ingredient i on dishingredient.id_ingredient = i.id where dish.id =1;
