@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="DataSourcePerFileMappings">
+    <file url="file://$PROJECT_DIR$/dish_plat/src/main/resources/sql/data.sql" value="eb4b0580-791a-478a-8132-2fec42682d73" />
     <file url="file://$PROJECT_DIR$/dish_plat/src/main/resources/sql/new_schema.sql" value="eb4b0580-791a-478a-8132-2fec42682d73" />
     <file url="file://$PROJECT_DIR$/dish_plat/src/main/resources/sql/schema.sql" value="eb4b0580-791a-478a-8132-2fec42682d73" />
   </component>

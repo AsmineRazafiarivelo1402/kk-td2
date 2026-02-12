@@ -102,7 +102,6 @@ public class Ingredient {
             stockValue.setUnit(Unit.KG); // ou unité par défaut
             return stockValue;
         }
-
         Map<Unit, List<StockMovement>> unitSet =
                 stockMovementList.stream()
                         .collect(Collectors.groupingBy(sm -> sm.getValue().getUnit()));
@@ -111,10 +110,14 @@ public class Ingredient {
             throw new RuntimeException("Multiple unit found and not handled");
         }
 
+
         List<StockMovement> stockMovements =
                 stockMovementList.stream()
                         .filter(sm -> !sm.getCreationDateTime().isAfter(t))
                         .toList();
+//        double changeUnitIn =
+//                stockMovements.stream()
+//                        .filter(sm -> sm.getMovementtype() == Movementtype.IN && sm.getValue().getUnit() != Unit.KG)
 
         double movementIn =
                 stockMovements.stream()

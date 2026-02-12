@@ -886,7 +886,44 @@ public Order saveOrder(Order orderToSave) {
             throw new RuntimeException(e);
         }
     }
+public StockValue getStockValueat(Instant instant, Integer ingredientIdentifier){
+  String selectStock = """
+          SELECT id_ingredient,unit,
+              COALESCE(SUM(
+                               CASE
+                                   WHEN type = 'IN'  THEN quantity
+                                   WHEN type = 'OUT' THEN -quantity
+                                   END
+                       ), 0) AS actual_quantity
+          
+          FROM StockMovement
+          WHERE   id_ingredient = ? and  creation_datetime <=?
+          GROUP BY id_ingredient,unit;
+          """;
+  DBConnection dbconnection = new DBConnection();
+  Connection connection = dbconnection.getConnection();
 
+  try{
+      PreparedStatement ps = connection.prepareStatement(selectStock);
+      ps.setInt(1,ingredientIdentifier);
+      ps.setTimestamp(2,Timestamp.from(instant));
+        ResultSet rs = ps.executeQuery();
+        StockValue stockValue = new StockValue();
+        if(rs.next()){
+
+            stockValue.setQuantity(rs.getDouble("actual_quantity"));
+            stockValue.setUnit(Unit.valueOf(rs.getString("unit")));
+        }
+
+        dbconnection.closeConnection(connection);
+      return stockValue;
+
+  } catch (SQLException e) {
+      throw new RuntimeException(e);
+  }
+
+
+}
 
 }
 

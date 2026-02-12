@@ -46,4 +46,6 @@ public class StockValue {
                 ", unit=" + unit +
                 '}';
     }
+
+
 }

@@ -6,15 +6,25 @@ public class StockMovement {
     StockValue value;
     Movementtype movementtype;
     Instant creationDateTime;
+    String commentaire;
 
     public StockMovement() {
     }
 
-    public StockMovement(int id, Movementtype movementtype,Instant creationDateTime, StockValue value) {
+    public StockMovement( Instant creationDateTime, int id, Movementtype movementtype, StockValue value,String commentaire) {
+        this.commentaire = commentaire;
         this.creationDateTime = creationDateTime;
         this.id = id;
         this.movementtype = movementtype;
         this.value = value;
+    }
+
+    public String getCommentaire() {
+        return commentaire;
+    }
+
+    public void setCommentaire(String commentaire) {
+        this.commentaire = commentaire;
     }
 
     public Instant getCreationDateTime() {

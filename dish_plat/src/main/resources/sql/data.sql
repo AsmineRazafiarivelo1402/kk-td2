@@ -40,13 +40,25 @@ values ('salade fraiche','STARTER',3500.00),
 INSERT INTO StockMovement  (id,id_ingredient,quantity,type,unit,creation_datetime)
 values
     (1,1,5.0,'IN','KG','2024-01-05 08:00'),
-    (2,1,0.2,'OUT','KG','2024-01-06 12:00'),
-    (3,2,4.0,'IN','KG','2024-01-05 08:00'),
-    (4,2,0.15,'OUT','KG','2024-01-06 12:00'),
-    (5,3,10.0,'IN','KG','2024-01-04 09:00'),
-    (6,3,1.0,'OUT','KG','2024-01-06 13:00'),
-    (7,4,3.0,'IN','KG','2024-01-05 10:00'),
-    (8,4,0.3,'OUT','KG','2024-01-05 14:00'),
-    (9,5,2.5,'IN','KG','2024-01-05 08:00'),
-    (10,5,0.2,'OUT','KG','2024-01-06 14:00');
 
+    (2,2,4.0,'IN','KG','2024-01-05 08:00'),
+
+    (3,3,10.0,'IN','KG','2024-01-04 09:00'),
+
+    (4,4,3.0,'IN','KG','2024-01-05 10:00'),
+
+    (5,5,2.5,'IN','KG','2024-01-05 08:00');
+
+
+INSERT INTO stockmovement
+(id_ingredient, quantity, type, unit, creation_datetime, commentaire)
+VALUES
+    (1, 5, 'OUT', 'PCS', NOW(), 'Préparation salade'),
+
+    (2, 2, 'OUT', 'PCS', NOW(), 'Préparation salade'),
+
+    (3, 1, 'OUT', 'L', NOW(), 'Dessert'),
+
+    (4, 4, 'OUT', 'PCS', NOW(), 'Plat principal'),
+
+    (5, 1, 'OUT', 'L', NOW(), 'Pâtisserie');

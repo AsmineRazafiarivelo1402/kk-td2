@@ -72,18 +72,9 @@ Create table StockMovement (
 --- update timestamp zone
 
  select  * from stockmovement;
+delete from stockmovement where type = 'OUT';
 select * from  ingredient;
-SELECT
-    COALESCE(SUM(
-                     CASE
-                         WHEN type = 'IN'  THEN quantity
-                         WHEN type = 'OUT' THEN -quantity
-                         END
-             ), 0) AS stock,
-    unit
-FROM StockMovement
-WHERE   id_ingredient =1 and  creation_datetime <= '2024-01-06 12:00'
-GROUP BY unit;
+
 
 select StockMovement.quantity, StockMovement.type from StockMovement where creation_datetime = '2024-01-06 12:00';
 
@@ -126,8 +117,29 @@ INSERT INTO "order" (id,reference_order,order_type,order_status,creation_datetim
                                                                                       (1,'ORD100','TAKE_AWAY','DELIVERED','2024-01-06 12:00'),
                                                                                       (2,'0RD102','EAT_IN','CREATED','2024-01-06 12:00');
 
-INSERT INTO "order" (id,reference_order,order_type,order_status,creation_datetime)values (3,'ORD102','EAT_IN','CREATED','2024-01-06 12:00');
+INSERT INTO "order" (id,reference_order,order_type,order_status,creation_datetime)values (4,'ORD103','EAT_IN','CREATED','2024-01-06 12:00');
 select * from "order";
 delete from "order" where reference_order = '0RD102';
 
 select "order".id, "order".reference_order, "order".creation_datetime, "order".order_status, "order".order_type from "order" ;
+ALTER TABLE stockmovement
+    ADD COLUMN commentaire text;
+
+SELECT setval(
+               pg_get_serial_sequence('stockmovement', 'id'),
+               (SELECT MAX(id) FROM stockmovement)
+       );
+
+SELECT unit,
+    COALESCE(SUM(
+                     CASE
+                         WHEN type = 'IN'  THEN quantity
+                         WHEN type = 'OUT' THEN -quantity
+                         END
+             ), 0) AS actual_quantity
+
+FROM StockMovement
+WHERE   id_ingredient =1 and  creation_datetime <= now()
+GROUP BY id_ingredient,unit;
+delete from stockmovement where type = 'OUT';
+select * from stockmovement ;
