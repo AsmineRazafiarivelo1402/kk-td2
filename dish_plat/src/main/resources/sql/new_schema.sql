@@ -143,3 +143,6 @@ WHERE   id_ingredient =1 and  creation_datetime <= now()
 GROUP BY id_ingredient,unit;
 
 SELECT sum(i.price ) as total_price from dishingredient join dish on dish.id = dishingredient.id_dish  join ingredient i on dishingredient.id_ingredient = i.id where dish.id =1;
+SELECT d.selling_price - sum(i.price * di.quantity_required) as marge from DishIngredient di join dish d on d.id = di.id_dish join ingredient i on di.id_ingredient = i.id where id_dish = 1 group by d.selling_price ;
+ select dish.selling_price from dish where id =1;
+select i.price , di.quantity_required from dishingredient di join dish on dish.id = di.id_dish join ingredient i on di.id_ingredient = i.id where id_dish =1;

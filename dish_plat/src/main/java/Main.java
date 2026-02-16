@@ -10,12 +10,14 @@ public class Main {
 //  order.setOrderStatus(OrderStatus.DELIVERED);
 //    dataRetriever.saveOrder(order);
 
-StockValue stockValue = dataRetriever.getStockValueat(Instant.now(),1);
-        System.out.println(stockValue);
-        Double price = 0.0;
-        price = dataRetriever.getDishCost(1);
-        System.out.println(price);
+//StockValue stockValue = dataRetriever.getStockValueat(Instant.now(),1);
+//        System.out.println(stockValue);
+//        Double price = 0.0;
+//        price = dataRetriever.getDishCost(1);
+//        System.out.println(price);
 
+        double marge = dataRetriever.getGrossMargin(1);
+        System.out.println(marge);
 
 
         }}

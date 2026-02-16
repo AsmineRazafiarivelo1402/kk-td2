@@ -945,8 +945,32 @@ public StockValue getStockValueat(Instant instant, Integer ingredientIdentifier)
         throw new RuntimeException(e);
     }
     }
-}
+    Double  getGrossMargin(Integer dishId){
+    String marginSQL = """
+            SELECT d.selling_price - sum(i.price * di.quantity_required) as marge
+             from DishIngredient di 
+             join dish d on d.id = di.id_dish 
+             join ingredient i on di.id_ingredient = i.id
+              where id_dish = ?  group by d.selling_price ;
+            """;
+    DBConnection dbConnection = new DBConnection();
+    Connection connection = dbConnection.getConnection();
+    Double grossMargin =0.0;
+    try{
+        PreparedStatement ps = connection.prepareStatement(marginSQL);
+        ps.setInt(1,dishId);
+        ResultSet rs = ps.executeQuery();
+        if(rs.next()){
+            grossMargin = rs.getDouble("marge");
+        }
+        dbConnection.closeConnection(connection);
+        return grossMargin;
+    } catch (SQLException e) {
+        throw new RuntimeException(e);
+    }
+    }
 
+}
 //    public List<Ingredient> createIngredients(List<Ingredient> newIngredients) {
 //        if (newIngredients == null || newIngredients.isEmpty()) {
 //            return List.of();
