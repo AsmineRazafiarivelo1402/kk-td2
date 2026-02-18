@@ -15,7 +15,9 @@ public static void main(String[] args) {
 //    for (InvoiceTotal invoice : totals) {
 //        System.out.println(invoice);
 //    }
-    InvoiceStatusTotals invoiceStatusTotals = dataRetriver.computeStatusTotals();
-    System.out.println(invoiceStatusTotals);
+//    InvoiceStatusTotals invoiceStatusTotals = dataRetriver.computeStatusTotals();
+//    System.out.println(invoiceStatusTotals);
+    double compute = dataRetriver.computeWeightedTurnover();
+    System.out.println(compute);
 }
 

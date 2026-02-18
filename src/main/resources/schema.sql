@@ -59,17 +59,6 @@ WHERE Salary = (SELECT MAX(Salary) FROM Employees);
 CASE when status = 'CONFIRMED' then +quantity as confirmed
 case when status = 'DRAFT' then +quantity as draft
 
-SELECT CustomerName, Country, Age,
-       CASE
-           WHEN Country = 'United Kingdom' THEN 'British'
-           WHEN Country = 'Australia' THEN 'Australian'
-           WHEN Country = 'Japan' THEN 'Japanese'
-           WHEN Country = 'Austria' THEN 'Austrian'
-           WHEN Country = 'Spain' THEN 'Spanish'
-           ELSE 'Other'
-           END AS Nationality
-FROM Customer;
-
 SELECT
     CASE
         WHEN  status = 'PAID' then sum(il.quantity * il.unit_price)
@@ -102,3 +91,15 @@ FROM invoice i
          JOIN invoice_line il ON i.id = il.invoice_id;
 
 
+select sum(   (CASE
+                       WHEN i.status = 'PAID'
+                           THEN il.quantity * il.unit_price
+                       ELSE 0
+    END ) +  (CASE
+                                   WHEN i.status = 'CONFIRMED'
+                                       THEN (il.quantity * il.unit_price) / 2
+                                   ELSE 0
+    END) ) as computeWeight
+
+FROM invoice i
+         JOIN invoice_line il ON i.id = il.invoice_id;

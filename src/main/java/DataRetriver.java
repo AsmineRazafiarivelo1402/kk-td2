@@ -52,12 +52,8 @@ public class DataRetriver {
         return invoiceTotals;
     }
     public List<InvoiceTotal> findConfirmedAndPaidInvoiceTotals() {
-
         DBConnection dbConnection = new DBConnection();
-
-
         List<InvoiceTotal> invoiceTotals = new ArrayList<>();
-
         String sql = """
             SELECT
                 i.id,
@@ -137,6 +133,38 @@ public class DataRetriver {
             throw new RuntimeException(e);
         }
 
+    }
+    Double computeWeightedTurnover(){
+        DBConnection dbConnection = new DBConnection();
+        double compute = 0.0;
+        String sql = """
+                
+                select sum(   (CASE
+                                       WHEN i.status = 'PAID'
+                                           THEN il.quantity * il.unit_price
+                                       ELSE 0
+                    END ) +  (CASE
+                                                   WHEN i.status = 'CONFIRMED'
+                                                       THEN (il.quantity * il.unit_price) / 2
+                                                   ELSE 0
+                    END) ) as computeWeight
+                
+                FROM invoice i
+                         JOIN invoice_line il ON i.id = il.invoice_id;
+                """;
+        try(Connection connection = dbConnection.getConnection();
+            PreparedStatement ps = connection.prepareStatement(sql);
+            ResultSet rs = ps.executeQuery();
+        ) {
+            if(rs.next()){
+              compute = rs.getDouble("computeweight");
+            }
+            dbConnection.closeConnection(connection);
+            return compute;
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
     }
 
 
