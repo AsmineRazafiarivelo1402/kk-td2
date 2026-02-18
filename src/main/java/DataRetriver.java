@@ -170,18 +170,21 @@ public class DataRetriver {
     List<InvoiceTaxSummary>    findInvoiceTaxSummaries(){
         DBConnection dbConnection = new DBConnection();
         String sql = """
-                SELECT\s
-                    SUM(line_total) AS ht,
-                    SUM(line_total * 0.2) AS tva,
-                    SUM(line_total * 1.2) AS ttc
-                FROM (
-                    SELECT\s
-                        i.id AS invoice_id,
-                        (il.quantity * il.unit_price) AS line_total
-                    FROM invoice i
-                    JOIN invoice_line il ON i.id = il.invoice_id
-                ) sub
-                GROUP BY invoice_id;
+               
+                SELECT
+                   SUM(line_total) AS ht,
+                   SUM(line_total * t.rate / 100) AS tva,
+                   SUM(line_total * (1 + t.rate / 100)) AS ttc
+               FROM (
+                   SELECT
+                       i.id AS invoice_id,
+                       (il.quantity * il.unit_price) AS line_total
+                   FROM invoice i
+                   JOIN invoice_line il ON i.id = il.invoice_id
+               ) sub
+               CROSS JOIN tax_config t
+               GROUP BY invoice_id;
+               
                 
                 """;
         List<InvoiceTaxSummary> lists = new ArrayList<>();
