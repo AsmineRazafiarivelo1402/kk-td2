@@ -1,3 +1,4 @@
+import java.math.BigDecimal;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -203,6 +204,40 @@ public class DataRetriver {
         }
 
     }
+    BigDecimal computeWeightedTurnoverTtc() {
+        DBConnection dbConnection = new DBConnection();
+
+        String sql = """
+        SELECT 
+            SUM(
+                (il.quantity * il.unit_price) *
+                CASE
+                    WHEN i.status = 'PAID' THEN 1
+                    WHEN i.status = 'CONFIRMED' THEN 0.5
+                    ELSE 0
+                END
+                * (1 + t.rate / 100)
+            ) AS compute_weighted_ttc
+        FROM invoice i
+        JOIN invoice_line il ON i.id = il.invoice_id
+        CROSS JOIN tax_config t;
+    """;
+
+        try (Connection connection = dbConnection.getConnection();
+             PreparedStatement ps = connection.prepareStatement(sql);
+             ResultSet rs = ps.executeQuery()) {
+
+            if (rs.next()) {
+                  return rs.getBigDecimal("compute_weighted_ttc");
+            } else {
+                return BigDecimal.ZERO;
+            }
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
 
 
 

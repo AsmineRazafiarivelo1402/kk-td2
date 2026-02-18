@@ -24,5 +24,8 @@ public static void main(String[] args) {
     for(InvoiceTaxSummary invoiceTaxSummary : lists){
         System.out.println(invoiceTaxSummary);
     }
+
+    BigDecimal compute_ttc = dataRetriver.computeWeightedTurnoverTtc();
+    System.out.println(compute_ttc);
 }
 

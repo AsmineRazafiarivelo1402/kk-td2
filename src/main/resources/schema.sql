@@ -103,6 +103,18 @@ select sum(   (CASE
 
 FROM invoice i
          JOIN invoice_line il ON i.id = il.invoice_id;
+select sum(   (CASE
+                       WHEN i.status = 'PAID'
+                           THEN il.quantity * il.unit_price
+                       ELSE 0
+    END ) +  (CASE
+                                   WHEN i.status = 'CONFIRMED'
+                                       THEN (il.quantity * il.unit_price) / 2
+                                   ELSE 0
+    END) ) as computeWeight
+
+FROM invoice i
+         JOIN invoice_line il ON i.id = il.invoice_id;
 
 select SUM(il.quantity * il.unit_price) as HT ,
        SUM((il.quantity * il.unit_price)*(0.2)) as TVA ,
@@ -121,3 +133,20 @@ FROM (
                   JOIN invoice_line il ON i.id = il.invoice_id
      ) sub
 GROUP BY invoice_id;
+
+SELECT
+    SUM(
+            (
+                CASE
+                    WHEN i.status = 'PAID'
+                        THEN il.quantity * il.unit_price
+                    WHEN i.status = 'CONFIRMED'
+                        THEN (il.quantity * il.unit_price) / 2
+                    ELSE 0
+                    END
+                ) * (1 + t.rate / 100)
+    ) AS compute_weighted_ttc
+FROM invoice i
+         JOIN invoice_line il ON i.id = il.invoice_id
+         CROSS JOIN tax_config t;
+
