@@ -9,7 +9,7 @@ public class DataRetriver {
     public List<InvoiceTotal> findInvoiceTotals() {
 
         DBConnection dbConnection = new DBConnection();
-        Connection connection = dbConnection.getConnection();
+
 
         List<InvoiceTotal> invoiceTotals = new ArrayList<>();
 
@@ -25,7 +25,7 @@ public class DataRetriver {
             ORDER BY i.id
             """;
 
-        try {
+        try(Connection connection = dbConnection.getConnection()) {
             PreparedStatement ps = connection.prepareStatement(sql);
             ResultSet rs = ps.executeQuery();
 
@@ -54,7 +54,7 @@ public class DataRetriver {
     public List<InvoiceTotal> findConfirmedAndPaidInvoiceTotals() {
 
         DBConnection dbConnection = new DBConnection();
-        Connection connection = dbConnection.getConnection();
+
 
         List<InvoiceTotal> invoiceTotals = new ArrayList<>();
 
@@ -71,7 +71,7 @@ public class DataRetriver {
             ORDER BY i.id
             """;
 
-        try {
+        try (  Connection connection = dbConnection.getConnection()){
             PreparedStatement ps = connection.prepareStatement(sql);
             ResultSet rs = ps.executeQuery();
 
