@@ -17,7 +17,12 @@ public static void main(String[] args) {
 //    }
 //    InvoiceStatusTotals invoiceStatusTotals = dataRetriver.computeStatusTotals();
 //    System.out.println(invoiceStatusTotals);
-    double compute = dataRetriver.computeWeightedTurnover();
-    System.out.println(compute);
+//    double compute = dataRetriver.computeWeightedTurnover();
+//    System.out.println(compute);
+
+    List<InvoiceTaxSummary> lists = dataRetriver.findInvoiceTaxSummaries();
+    for(InvoiceTaxSummary invoiceTaxSummary : lists){
+        System.out.println(invoiceTaxSummary);
+    }
 }
 
