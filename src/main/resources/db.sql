@@ -1,4 +1,5 @@
 create database pushDown;
+\c
 CREATE TYPE invoice_status AS ENUM('DRAFT', 'CONFIRMED', 'PAID');
 CREATE TABLE invoice (
                          id SERIAL PRIMARY KEY,
@@ -11,3 +12,5 @@ CREATE TABLE invoice_line (
                               quantity INT NOT NULL,
                               unit_price NUMERIC(10,2) NOT NULL
 );
+
+

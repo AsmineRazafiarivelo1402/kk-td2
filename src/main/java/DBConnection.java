@@ -5,7 +5,7 @@ import java.sql.SQLException;
 public class DBConnection {
     public Connection getConnection() {
         try {
-            String jdbcURl = "jdbc:postgresql://localhost:5432/pudhdown"; //
+            String jdbcURl = "jdbc:postgresql://localhost:5432/pushdown"; //
             String user = "postgres"; //mini_dish_db_manager
             String password = "Asmine1402"; //123456
             return DriverManager.getConnection(jdbcURl, user, password);
