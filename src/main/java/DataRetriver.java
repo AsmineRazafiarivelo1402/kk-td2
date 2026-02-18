@@ -166,6 +166,9 @@ public class DataRetriver {
             throw new RuntimeException(e);
         }
     }
+    List<InvoiceTaxSummary>    findInvoiceTaxSummaries(){
+        throw new RuntimeException();
+    }
 
 
 
