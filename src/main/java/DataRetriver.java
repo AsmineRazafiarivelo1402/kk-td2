@@ -95,7 +95,48 @@ public class DataRetriver {
         return invoiceTotals;
     }
     InvoiceStatusTotals computeStatusTotals(){
-        throw new RuntimeException();
+        DBConnection dbConnection = new DBConnection();
+        InvoiceStatusTotals invoiceStatusTotals = new InvoiceStatusTotals();
+        String sql = """
+                SELECT
+                    SUM(CASE\s
+                            WHEN i.status = 'PAID'\s
+                            THEN il.quantity * il.unit_price\s
+                            ELSE 0\s
+                        END) AS total_paid,
+                
+                    SUM(CASE\s
+                            WHEN i.status = 'CONFIRMED'\s
+                            THEN il.quantity * il.unit_price\s
+                            ELSE 0\s
+                        END) AS total_confirmed,
+                
+                    SUM(CASE\s
+                            WHEN i.status = 'DRAFT'\s
+                            THEN il.quantity * il.unit_price\s
+                            ELSE 0\s
+                        END) AS total_draft
+                
+                FROM invoice i
+                JOIN invoice_line il ON i.id = il.invoice_id;
+                
+                """;
+        try(Connection connection = dbConnection.getConnection();
+            PreparedStatement ps = connection.prepareStatement(sql);
+            ResultSet rs = ps.executeQuery();
+           ) {
+            while(rs.next()){
+                invoiceStatusTotals.setTotal_paid(rs.getDouble("total_paid"));
+                invoiceStatusTotals.setTotal_confirmed(rs.getDouble("total_confirmed"));
+                invoiceStatusTotals.setTotal_draft(rs.getDouble("total_draft"));
+            }
+            dbConnection.closeConnection(connection);
+            return invoiceStatusTotals;
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+
     }
 
 

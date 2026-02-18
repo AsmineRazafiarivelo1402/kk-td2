@@ -10,10 +10,12 @@ public static void main(String[] args) {
 //        System.out.println(invoice);
 //    }
 
-    List<InvoiceTotal> totals = dataRetriver.findConfirmedAndPaidInvoiceTotals();
-
-    for (InvoiceTotal invoice : totals) {
-        System.out.println(invoice);
-    }
+//    List<InvoiceTotal> totals = dataRetriver.findConfirmedAndPaidInvoiceTotals();
+//
+//    for (InvoiceTotal invoice : totals) {
+//        System.out.println(invoice);
+//    }
+    InvoiceStatusTotals invoiceStatusTotals = dataRetriver.computeStatusTotals();
+    System.out.println(invoiceStatusTotals);
 }
 
