@@ -47,4 +47,7 @@ public class DataRetriever {
         }
 
     }
+    List<CandidateVoteCount> countValidVotesByCandidate(){
+
+    }
 }
