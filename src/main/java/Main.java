@@ -1,0 +1,6 @@
+public static  void main(String[] args) {
+
+    DataRetriever dataRetriever = new DataRetriever();
+    System.out.println(dataRetriever.countAllVotes());
+    System.out.println(dataRetriever.countVotesByType());
+}
