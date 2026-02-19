@@ -127,6 +127,9 @@ catch (SQLException e) {
         }
         throw new RuntimeException();
     }
+    ElectionResult findWinner(){
 
+
+    }
 
     }
