@@ -73,4 +73,7 @@ public class DataRetriever {
             throw new RuntimeException(ex);
         }
     }
+    VoteSummary computeVoteSummary(){
+        throw new RuntimeException();
+    }
     }
