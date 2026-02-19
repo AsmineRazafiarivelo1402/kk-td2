@@ -25,3 +25,8 @@ SELECT
 FROM vote
          JOIN candidate ON vote.candidate_id = candidate.id
 GROUP BY candidate.name;
+
+select  COUNT(vote_type) FILTER (WHERE vote.vote_type = 'VALID') AS valid_count,
+        COUNT(vote_type) FILTER (WHERE vote.vote_type = 'BLANK') AS blank_count,
+        COUNT(vote_type) FILTER (WHERE vote.vote_type = 'NULL') AS null_count
+from vote ;

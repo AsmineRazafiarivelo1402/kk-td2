@@ -74,6 +74,29 @@ public class DataRetriever {
         }
     }
     VoteSummary computeVoteSummary(){
+    DBConnection dbConnection = new DBConnection();
+    String sql = """
+            select  COUNT(vote_type) FILTER (WHERE vote.vote_type = 'VALID') AS valid_count,
+                    COUNT(vote_type) FILTER (WHERE vote.vote_type = 'BLANK') AS blank_count,
+                    COUNT(vote_type) FILTER (WHERE vote.vote_type = 'NULL') AS null_count
+            from vote ;
+            """;
+
+        try(Connection connection = dbConnection.getConnection();
+        PreparedStatement ps = connection.prepareStatement(sql);
+        ResultSet rs = ps.executeQuery()){
+            if(rs.next()){
+                VoteSummary voteSummary = new VoteSummary();
+                voteSummary.setBlankCount(rs.getInt("blank_count"));
+                voteSummary.setNullCount(rs.getInt("null_count"));
+                voteSummary.setValidCount(rs.getInt("valid_count"));
+                return voteSummary;
+            }
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
         throw new RuntimeException();
+
     }
     }
