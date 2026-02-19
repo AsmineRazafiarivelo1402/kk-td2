@@ -4,5 +4,6 @@ public static  void main(String[] args) {
 //    System.out.println(dataRetriever.countAllVotes());
 //    System.out.println(dataRetriever.countVotesByType());
 //    System.out.println(dataRetriever.countValidVotesByCandidate());
-    System.out.println(dataRetriever.computeVoteSummary());
+//    System.out.println(dataRetriever.computeVoteSummary());
+    System.out.println(dataRetriever.computeTurnoutRate());
 }

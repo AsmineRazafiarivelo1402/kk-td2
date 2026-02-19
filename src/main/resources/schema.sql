@@ -30,3 +30,5 @@ select  COUNT(vote_type) FILTER (WHERE vote.vote_type = 'VALID') AS valid_count,
         COUNT(vote_type) FILTER (WHERE vote.vote_type = 'BLANK') AS blank_count,
         COUNT(vote_type) FILTER (WHERE vote.vote_type = 'NULL') AS null_count
 from vote ;
+
+select  (count(vote.voter_id) / count(public.voter.id)) * 100 as tax_participation from vote join voter on vote.voter_id = voter.id;
