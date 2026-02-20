@@ -1,5 +1,6 @@
 import com.sun.jdi.Value;
 
+import javax.print.attribute.standard.MediaSize;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -128,8 +129,35 @@ catch (SQLException e) {
         throw new RuntimeException();
     }
     ElectionResult findWinner(){
+    DBConnection dbConnection = new DBConnection();
+    ElectionResult winner = new ElectionResult();
+    String sql = """
+            SELECT
+                candidate.name,
+                COUNT(CASE
+                          WHEN vote.vote_type = 'VALID'
+                              THEN 1
+                    END) AS total_valid_votes
+            FROM vote
+                     JOIN candidate ON vote.candidate_id = candidate.id
+            GROUP BY candidate.name
+            ORDER BY total_valid_votes DESC
+            LIMIT 1;
+            """;
 
-
+    try(Connection connection = dbConnection.getConnection();
+    PreparedStatement ps = connection.prepareStatement(sql);
+    ResultSet rs = ps.executeQuery()) {
+        if(rs.next()){
+            winner.setCandidateName(rs.getString("name"));
+            winner.setValidVoteCount(rs.getInt("total_valid_votes"));
+            return winner;
+        }
+    } catch (SQLException e) {
+        throw new RuntimeException(e);
     }
+    throw new RuntimeException();
+    }
+
 
     }

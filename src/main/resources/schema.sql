@@ -32,3 +32,35 @@ select  COUNT(vote_type) FILTER (WHERE vote.vote_type = 'VALID') AS valid_count,
 from vote ;
 
 select  (count(vote.voter_id) / count(public.voter.id)) * 100 as tax_participation from vote join voter on vote.voter_id = voter.id;
+select   candidate.name  from candidate having      max('total_valid_votes') in (
+
+select max(votevalid) from(
+select candidate.name as nom, count(vote.vote_type) FILTER ( WHERE vote.vote_type = 'VALID' ) as votevalid  from vote join candidate on vote.candidate_id = candidate.id group by candidate.name ) ;
+
+select name  from candidate join vote  on candidate.id = vote.candidate_id group by name having count(vote_type) in ( select max(vote_type)  as vote_valid from(
+select candidate.name as nom, count(vote.vote_type) FILTER ( WHERE vote.vote_type = 'VALID' ) as votevalid  from vote join candidate on vote.candidate_id = candidate.id group by candidate.name ) )  ;
+
+select name from vote join candidate on candidate.id = vote.candidate_id having count(vote_type)  ;
+select  max(total_valid_votes)from (
+
+SELECT
+    candidate.name,
+    COUNT(CASE
+              WHEN vote.vote_type = 'VALID'
+                  THEN 1
+        END) AS total_valid_votes
+FROM vote
+         JOIN candidate ON vote.candidate_id = candidate.id
+GROUP BY candidate.name)
+;
+SELECT
+    candidate.name,
+    COUNT(CASE
+              WHEN vote.vote_type = 'VALID'
+                  THEN 1
+        END) AS total_valid_votes
+FROM vote
+         JOIN candidate ON vote.candidate_id = candidate.id
+GROUP BY candidate.name
+ORDER BY total_valid_votes DESC
+LIMIT 1;
