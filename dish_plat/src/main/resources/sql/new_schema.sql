@@ -146,3 +146,36 @@ SELECT sum(i.price ) as total_price from dishingredient join dish on dish.id = d
 SELECT d.selling_price - sum(i.price * di.quantity_required) as marge from DishIngredient di join dish d on d.id = di.id_dish join ingredient i on di.id_ingredient = i.id where id_dish = 1 group by d.selling_price ;
  select dish.selling_price from dish where id =1;
 select i.price , di.quantity_required from dishingredient di join dish on dish.id = di.id_dish join ingredient i on di.id_ingredient = i.id where id_dish =1;
+SELECT *
+FROM "order"
+WHERE creation_datetime BETWEEN '2024-01-01' AND '2024-01-31';
+SELECT StockMovement.id_ingredient, StockMovement.quantity, StockMovement.type, StockMovement.unit, StockMovement.creation_datetime, StockMovement.commentaire
+FROM stockmovement
+WHERE creation_datetime BETWEEN '2024-01-01' AND '2024-01-31' group by StockMovement.id_ingredient;
+
+select StockMovement.creation_datetime from  StockMovement ;
+select StockMovement.quantity from stockmovement where id_ingredient= 1;
+SELECT
+    id_ingredient,
+
+    SUM(CASE WHEN DATE(creation_datetime) = '2024-01-01'
+                 THEN quantity ELSE 0 END) AS "01_01",
+
+    SUM(CASE WHEN DATE(creation_datetime) = '2024-01-02'
+                 THEN quantity ELSE 0 END) AS "02_01",
+
+    SUM(CASE WHEN DATE(creation_datetime) = '2024-01-03'
+                 THEN quantity ELSE 0 END) AS "03_01",
+
+    SUM(CASE WHEN DATE(creation_datetime) = '2024-01-04'
+                 THEN quantity ELSE 0 END) AS "04_01",
+
+    SUM(CASE WHEN DATE(creation_datetime) = '2024-01-05'
+                 THEN quantity ELSE 0 END) AS "05_01"
+
+FROM stockmovement
+WHERE creation_datetime BETWEEN '2024-01-01' AND '2024-01-31'
+GROUP BY id_ingredient;
+
+
+

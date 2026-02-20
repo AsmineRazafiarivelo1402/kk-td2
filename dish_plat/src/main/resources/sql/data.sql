@@ -53,12 +53,12 @@ values
 INSERT INTO stockmovement
 (id_ingredient, quantity, type, unit, creation_datetime, commentaire)
 VALUES
-    (1, 5, 'OUT', 'PCS', NOW(), 'Préparation salade'),
+    (1, 0.2, 'OUT', 'KG','2024-01-06 12:00', 'Préparation salade'),
 
-    (2, 2, 'OUT', 'PCS', NOW(), 'Préparation salade'),
+    (2, 0.15, 'OUT', 'KG','2024-01-06 12:00', 'Préparation salade'),
 
-    (3, 1, 'OUT', 'L', NOW(), 'Dessert'),
+    (3, 1.0, 'OUT', 'KG', '2024-01-05 13:00', 'Dessert'),
 
-    (4, 4, 'OUT', 'PCS', NOW(), 'Plat principal'),
+    (4, 0.3, 'OUT', 'KG','2024-01-06 14:00', 'Plat principal'),
 
-    (5, 1, 'OUT', 'L', NOW(), 'Pâtisserie');
+    (5, 0.2, 'OUT', 'KG', '2024-01-06 14:00', 'Pâtisserie');

@@ -1,7 +1,10 @@
 import java.sql.*;
 import java.time.Instant;
+import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 public class DataRetriever {
@@ -969,6 +972,79 @@ public StockValue getStockValueat(Instant instant, Integer ingredientIdentifier)
         throw new RuntimeException(e);
     }
     }
+
+    public List<Map<String, Object>> getStockStatistics(
+            LocalDate intervalMin,
+            LocalDate intervalMax,
+            String periodicity
+    ) throws SQLException {
+
+        StringBuilder sql = new StringBuilder();
+        sql.append("SELECT id_ingredient, ");
+
+        LocalDate current = intervalMin;
+
+        while (!current.isAfter(intervalMax)) {
+
+            String columnAlias = current.getDayOfMonth() + "_" + current.getMonthValue();
+
+            sql.append("SUM(CASE WHEN DATE(creation_datetime) = '")
+                    .append(current)
+                    .append("' THEN quantity ELSE 0 END) AS \"")
+                    .append(columnAlias)
+                    .append("\"");
+
+            if (!current.equals(intervalMax)) {
+                sql.append(", ");
+            }
+
+            // Gestion périodicité
+            switch (periodicity) {
+                case "DAY" -> current = current.plusDays(1);
+                case "WEEK" -> current = current.plusWeeks(1);
+                case "MONTH" -> current = current.plusMonths(1);
+                default -> throw new IllegalArgumentException("Invalid periodicity");
+            }
+        }
+
+        sql.append(" FROM stockmovement ");
+        sql.append(" WHERE creation_datetime BETWEEN ? AND ? ");
+        sql.append(" GROUP BY id_ingredient");
+        DBConnection dbConnection = new DBConnection();
+        Connection connection = dbConnection.getConnection();
+        PreparedStatement ps = connection.prepareStatement(sql.toString());
+
+        ps.setObject(1, intervalMin);
+        ps.setObject(2, intervalMax);
+
+        ResultSet rs = ps.executeQuery();
+
+        List<Map<String, Object>> results = new ArrayList<>();
+
+        while (rs.next()) {
+            Map<String, Object> row = new HashMap<>();
+            row.put("id_ingredient", rs.getInt("id_ingredient"));
+
+            current = intervalMin;
+
+            while (!current.isAfter(intervalMax)) {
+
+                String columnAlias = current.getDayOfMonth() + "_" + current.getMonthValue();
+                row.put(columnAlias, rs.getDouble(columnAlias));
+
+                switch (periodicity) {
+                    case "DAY" -> current = current.plusDays(1);
+                    case "WEEK" -> current = current.plusWeeks(1);
+                    case "MONTH" -> current = current.plusMonths(1);
+                }
+            }
+
+            results.add(row);
+        }
+
+        return results;
+    }
+
 
 }
 //    public List<Ingredient> createIngredients(List<Ingredient> newIngredients) {

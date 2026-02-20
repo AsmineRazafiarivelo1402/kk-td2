@@ -1,5 +1,7 @@
 import java.time.Instant;
+import java.time.LocalDate;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 public class Main {
@@ -19,8 +21,24 @@ public class Main {
         double marge = dataRetriever.getGrossMargin(1);
         System.out.println(marge);
 
+        try {
 
-        }}
+            List<Map<String, Object>> stats =
+                    dataRetriever.getStockStatistics(
+                            LocalDate.of(2024, 1, 1),
+                            LocalDate.of(2024, 1, 31),
+                            "DAY"
+                    );
+
+            System.out.println(stats);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+
+        }
 
 
 
