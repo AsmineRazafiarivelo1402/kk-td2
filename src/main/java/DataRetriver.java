@@ -122,12 +122,11 @@ public class DataRetriver {
             PreparedStatement ps = connection.prepareStatement(sql);
             ResultSet rs = ps.executeQuery();
            ) {
-            while(rs.next()){
+            while(rs.next()) {
                 invoiceStatusTotals.setTotal_paid(rs.getDouble("total_paid"));
                 invoiceStatusTotals.setTotal_confirmed(rs.getDouble("total_confirmed"));
                 invoiceStatusTotals.setTotal_draft(rs.getDouble("total_draft"));
             }
-            dbConnection.closeConnection(connection);
             return invoiceStatusTotals;
 
         } catch (SQLException e) {
@@ -160,7 +159,7 @@ public class DataRetriver {
             if(rs.next()){
               compute = rs.getDouble("computeweight");
             }
-            dbConnection.closeConnection(connection);
+
             return compute;
 
         } catch (SQLException e) {
@@ -199,7 +198,7 @@ public class DataRetriver {
                 invoiceTaxSummary.setTtc(rs.getDouble("ttc"));
                 lists.add(invoiceTaxSummary);
             }
-            dbConnection.closeConnection(connection);
+
             return lists;
 
         } catch (SQLException e) {

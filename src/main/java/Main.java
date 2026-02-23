@@ -1,7 +1,8 @@
 import java.util.List;
-
+import io.github.cdimascio.dotenv.Dotenv;
 public static void main(String[] args) {
 
+    Dotenv dotenv = Dotenv.load();
     DataRetriver  dataRetriver= new DataRetriver();
 //
 //    List<InvoiceTotal> totals = dataRetriver.findInvoiceTotals();
@@ -27,5 +28,9 @@ public static void main(String[] args) {
 
     BigDecimal compute_ttc = dataRetriver.computeWeightedTurnoverTtc();
     System.out.println(compute_ttc);
+
+
 }
+
+
 
