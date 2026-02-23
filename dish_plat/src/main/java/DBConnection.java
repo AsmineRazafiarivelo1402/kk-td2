@@ -1,27 +1,24 @@
+
+import io.github.cdimascio.dotenv.Dotenv;
+
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
 public class DBConnection {
-
     public Connection getConnection() {
+        Dotenv dotenv = Dotenv.load();
+
+
         try {
-            String jdbcURl = "jdbc:postgresql://localhost:5432/mini_dish_db"; //
-            String user = "mini_dish_db_manager"; //mini_dish_db_manager
-            String password = "123456"; //123456
+            final String jdbcURl = dotenv.get("JDBC_URL");
+            final String user = dotenv.get("DB_USER");
+            final String password = dotenv.get("DB_PASSWORD");
             return DriverManager.getConnection(jdbcURl, user, password);
         } catch (SQLException e) {
             throw new RuntimeException("Teste " + e);
         }
     }
 
-    public void closeConnection(Connection connection) {
-        if (connection != null) {
-            try {
-                connection.close();
-            } catch (SQLException e) {
-                throw new RuntimeException(e);
-            }
-        }
-    }
+
 }

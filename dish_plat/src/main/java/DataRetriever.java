@@ -62,7 +62,7 @@ Dish findDishById(Integer id) {
             dish.setDishIngredients(findDishIngredientByDishId(id));
             return dish;
         }
-        dbConnection.closeConnection(connection);
+
         throw new RuntimeException("Dish not found " + id);
     } catch (SQLException e) {
         throw new RuntimeException(e);
@@ -104,7 +104,7 @@ Dish findDishById(Integer id) {
                 ingredients.add(dishingredient);
 
             }
-            dbConnection.closeConnection(connection);
+
             return ingredients;
         } catch (SQLException e) {
             throw new RuntimeException(e);
@@ -131,7 +131,7 @@ Dish findDishById(Integer id) {
                 ingredient.setCategory(CategoryEnum.valueOf(resultSet.getString("category")));
                 ingredients.add(ingredient);
             }
-            dbConnection.closeConnection(connection);
+
             return ingredients;
         } catch (SQLException e) {
             throw new RuntimeException(e);
@@ -163,7 +163,7 @@ Dish findDishById(Integer id) {
                 dishes.add(dish);
                 return dishes;
             }
-            dbConnection.closeConnection(connection);
+
             throw new RuntimeException("Dish not found with ingredient " + ingredientName);
         } catch (SQLException e) {
             throw new RuntimeException(e);
@@ -567,7 +567,7 @@ String upsertDishSql = """
                 stockMovement.setValue(stockValue);
                 stockMovementList.add(stockMovement);
             }
-            dbConnection.closeConnection(connection);
+
             return stockMovementList;
         } catch (SQLException e) {
             throw new RuntimeException(e);
@@ -812,8 +812,6 @@ public Order saveOrder(Order orderToSave) {
 
         } catch (SQLException e) {
             throw new RuntimeException(e);
-        } finally {
-            dbConnection.closeConnection(connection);
         }
     }
 
@@ -837,7 +835,7 @@ public Order saveOrder(Order orderToSave) {
                 dishOrder.setQuantity(rs.getInt("quantity"));
                 dishOrderList.add(dishOrder);
             }
-            dbConnection.closeConnection(connection);
+
             return dishOrderList;
 
         } catch (SQLException e) {
@@ -918,7 +916,7 @@ public StockValue getStockValueat(Instant instant, Integer ingredientIdentifier)
             stockValue.setUnit(Unit.valueOf(rs.getString("unit")));
         }
 
-        dbconnection.closeConnection(connection);
+
       return stockValue;
 
   } catch (SQLException e) {
@@ -942,7 +940,7 @@ public StockValue getStockValueat(Instant instant, Integer ingredientIdentifier)
         if(rs.next()){
             totalPrice = rs.getDouble("total_price");
         }
-        dbConnection.closeConnection(connection);
+
         return totalPrice;
     } catch (SQLException e) {
         throw new RuntimeException(e);
@@ -966,7 +964,7 @@ public StockValue getStockValueat(Instant instant, Integer ingredientIdentifier)
         if(rs.next()){
             grossMargin = rs.getDouble("marge");
         }
-        dbConnection.closeConnection(connection);
+
         return grossMargin;
     } catch (SQLException e) {
         throw new RuntimeException(e);
